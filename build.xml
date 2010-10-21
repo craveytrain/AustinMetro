@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<project name="craveytrain" default="dev" basedir=".">
+	<defaultexcludes add="**/.git"/>
+	<defaultexcludes add="**/.git/**"/>
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="build"/>
+	<property name="lib.dir" value="/Users/mcravey/Projects/libs"/>
+
+	<!-- Source files -->
+	<property name="modernizr.src" value="${lib.dir}/Modernizr/modernizr.js"/>
+	<property name="global.css.src" value="${src.dir}/css/master.css"/>
+	
+	<!-- clean files -->
+	<property name="modernizr" value="${build.dir}/js/modernizr.js"/>
+	<property name="global.css" value="${build.dir}/css/master.css"/>
+	
+	<target name="clean">
+		<!-- Delete build directory -->
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init" depends="clean">
+		<!-- Make build directory -->
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="build" depends="init">
+		<!-- Copy everything to build directory -->
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}" />
+		</copy>
+		
+		<!-- Picking up these files from their repos elsewhere on disk -->
+		<copy file="${modernizr.src}" tofile="${modernizr}" />
+	</target>
+			
+	<macrodef name="deploy">
+		<attribute name="dest.dir" />
+		<element name="delexclusions" optional="true" />
+		<sequential>
+			<!-- Delete destination directory -->
+			<delete dir="@{dest.dir}/*">
+				<delexclusions />
+			</delete>			
+
+			<!-- Make destination directory -->
+			<mkdir dir="@{dest.dir}"/>
+
+			<!-- Copy build directory to destination directory -->
+			<copy todir="@{dest.dir}">
+				<fileset dir="${build.dir}" />
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<target name="dev" depends="build">
+		<deploy dest.dir="/Volumes/metro" />
+	</target>
+
+	<target name="min" depends="minify">
+		<deploy dest.dir="/Volumes/metro" />
+	</target>
+</project>
