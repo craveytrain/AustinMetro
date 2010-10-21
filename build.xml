@@ -6,13 +6,8 @@
 	<property name="build.dir" value="build"/>
 	<property name="lib.dir" value="/Users/mcravey/Projects/libs"/>
 
-	<!-- Source files -->
 	<property name="modernizr.src" value="${lib.dir}/Modernizr/modernizr.js"/>
-	<property name="global.css.src" value="${src.dir}/css/master.css"/>
-	
-	<!-- clean files -->
 	<property name="modernizr" value="${build.dir}/js/modernizr.js"/>
-	<property name="global.css" value="${build.dir}/css/master.css"/>
 	
 	<target name="clean">
 		<!-- Delete build directory -->
@@ -33,6 +28,34 @@
 		<!-- Picking up these files from their repos elsewhere on disk -->
 		<copy file="${modernizr.src}" tofile="${modernizr}" />
 	</target>
+
+	<target name="minify" depends="build">
+		<echo>Cleaning out js directory</echo>
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dir}/js" includes="**/*"/>
+		</delete>
+		<compress src.file="${modernizr.src}" dest.file="${modernizr}" minifier="closure_compiler" />
+		<echo>Cleaning out css directory</echo>
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dir}/css" includes="**/*"/>
+		</delete>
+		<compress src.file="${src.dir}/css/master.css" dest.file="${build.dir}/css/master.css" minifier="yui_compressor" />
+/>
+	</target>
+
+	<macrodef name="compress">
+		<attribute name="src.file" />
+		<attribute name="dest.file" />
+		<attribute name="minifier" />
+		<sequential>
+			<echo>Minifying @{src.file} to @{dest.file}</echo>
+			<apply executable="juicer" parallel="false">
+				<arg line="merge -sf -m @{minifier}"/>
+				<arg line="-o @{dest.file}"/>
+				<filelist files="@{src.file}" />
+			</apply>
+		</sequential>
+	</macrodef>
 			
 	<macrodef name="deploy">
 		<attribute name="dest.dir" />
@@ -58,6 +81,6 @@
 	</target>
 	
 	<target name="min" depends="minify">
-		<deploy dest.dir="/Volumes/metro" />
+<!--		<deploy dest.dir="/Volumes/metro" /> -->
 	</target>	
 </project>
