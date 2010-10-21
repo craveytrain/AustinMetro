@@ -56,4 +56,8 @@
 	<target name="dev" depends="build">
 		<deploy dest.dir="/Volumes/metro" />
 	</target>
+	
+	<target name="min" depends="minify">
+		<deploy dest.dir="/Volumes/metro" />
+	</target>	
 </project>
