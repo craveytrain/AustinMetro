@@ -40,7 +40,6 @@
 			<fileset dir="${build.dir}/css" includes="**/*"/>
 		</delete>
 		<compress src.file="${src.dir}/css/master.css" dest.file="${build.dir}/css/master.css" minifier="yui_compressor" />
-/>
 	</target>
 
 	<macrodef name="compress">
@@ -81,6 +80,6 @@
 	</target>
 	
 	<target name="min" depends="minify">
-<!--		<deploy dest.dir="/Volumes/metro" /> -->
+		<deploy dest.dir="/Volumes/metro" />
 	</target>	
 </project>
