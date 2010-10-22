@@ -40,6 +40,7 @@ h1 {
 	display: block;
 	line-height: 1;
 	color: #222;
+	/* TODO: add text shadow */
 }
 
 .past .route time {
@@ -49,36 +50,40 @@ h1 {
 .route .relative {
 	display: block;
 	margin-top: -.5em;
-	margin-right: 1em;
 	color: #aaa;
-	text-align: right;
 }
 
 .past .route .relative {
 	color: rgb(164, 5, 22);
 }
 
-.arrow {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -5px;
-	display: block;
-	height: 0;
-	width: 0;
-	text-decoration: none;
-	text-indent: -9999px;
-	border: 15px solid transparent;
+.route nav {
+	margin-top: 1em;
 }
 
-#prev {
-	margin-left: -11em;
-	border-right-color: rgb(164, 5, 22);
-	border-left: none;
+.route nav ol {
+	list-style: none;
+	margin-left: 0;
 }
 
-#next {
-	margin-left: 9em;
-	border-left-color: rgb(164, 5, 22);
-	border-right none;
+.route nav li {
+	display: inline-block;
+	width: 3em;
+	line-height: 2em;
+	text-align: center;
+	border: 1px solid #ddd;
+}
+
+.route nav li:hover {
+	cursor: pointer;
+	border-color: #bbb;
+/* TODO: fix this
+	box-shadow: 0 0 2px #bbb;
+*/
+}	
+
+.route nav .current {
+	background: rgb(164, 5, 22);
+	color: #fff;
+	border-color: rgb(164, 5, 22);
 }
