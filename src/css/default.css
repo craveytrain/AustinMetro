@@ -40,7 +40,7 @@ h1 {
 	display: block;
 	line-height: 1;
 	color: #222;
-	/* TODO: add text shadow */
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
 }
 
 .past .route time {
@@ -72,14 +72,12 @@ h1 {
 	line-height: 2em;
 	text-align: center;
 	border: 1px solid #ddd;
+	box-shadow: 10px 10px 5px #888;
 }
 
 .route nav li:hover {
 	cursor: pointer;
-	border-color: #bbb;
-/* TODO: fix this
-	box-shadow: 0 0 2px #bbb;
-*/
+	-moz-box-shadow: 0 0 2px rgba(0, 0, 0, .25);
 }	
 
 .route nav .current {
