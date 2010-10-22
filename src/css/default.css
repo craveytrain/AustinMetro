@@ -42,12 +42,20 @@ h1 {
 	color: #222;
 }
 
+.past .route time {
+	color: #aaa;
+}
+
 .route .relative {
 	display: block;
 	margin-top: -.5em;
 	margin-right: 1em;
 	color: #aaa;
 	text-align: right;
+}
+
+.past .route .relative {
+	color: rgb(164, 5, 22);
 }
 
 .arrow {

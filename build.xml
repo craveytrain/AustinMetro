@@ -35,6 +35,7 @@
 			<fileset dir="${build.dir}/js" includes="**/*"/>
 		</delete>
 		<compress src.file="${modernizr.src}" dest.file="${modernizr}" minifier="closure_compiler" />
+		<compress src.file="${src.dir}/js/global.js" dest.file="${build.dir}/js/global.js" minifier="closure_compiler" />
 		<echo>Cleaning out css directory</echo>
 		<delete includeemptydirs="true">
 			<fileset dir="${build.dir}/css" includes="**/*"/>
