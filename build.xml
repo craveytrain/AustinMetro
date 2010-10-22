@@ -80,6 +80,9 @@
 		</sequential>
 	</macrodef>
 
+	<target name="local" depends="build">
+	</target>
+
 	<target name="dev" depends="build">
 		<deploy dest.dir="/Volumes/metro" />
 	</target>
