@@ -6,11 +6,6 @@
 	<property name="build.dir" value="build"/>
 	<property name="lib.dir" value="/Users/mcravey/Projects/libs"/>
 
-	<property name="modernizr.src" value="${lib.dir}/Modernizr/modernizr.js"/>
-	<property name="modernizr" value="${build.dir}/js/modernizr.js"/>
-	<property name="xui.src" value="${lib.dir}/xui/lib/xui.js"/>
-	<property name="xui" value="${build.dir}/js/xui.js"/>
-	
 	<target name="clean">
 		<!-- Delete build directory -->
 		<delete dir="${build.dir}" />
@@ -26,10 +21,6 @@
 		<copy todir="${build.dir}">
 			<fileset dir="${src.dir}" />
 		</copy>
-		
-		<!-- Picking up these files from their repos elsewhere on disk -->
-<!--		<copy file="${modernizr.src}" tofile="${modernizr}" /> -->
-		<copy file="${xui.src}" tofile="${xui}" />
 	</target>
 
 	<target name="minify" depends="build">
@@ -37,8 +28,6 @@
 		<delete includeemptydirs="true">
 			<fileset dir="${build.dir}/js" includes="**/*"/>
 		</delete>
-<!--		<compress src.file="${modernizr.src}" dest.file="${modernizr}" minifier="closure_compiler" /> -->
-		<compress src.file="${xui.src}" dest.file="${xui}" minifier="closure_compiler" />
 		<compress src.file="${src.dir}/js/global.js" dest.file="${build.dir}/js/global.js" minifier="closure_compiler" />
 		<echo>Cleaning out css directory</echo>
 		<delete includeemptydirs="true">

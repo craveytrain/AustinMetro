@@ -2,15 +2,14 @@ var metro = {
 	init: function () {
 		var nextNB = '5:25 AM',
 				nextSB = '6:05 AM',
-				refreshNB = setInterval(metro.ttl, 10000, nextNB, 'north'),
-				refreshSB = setInterval(metro.ttl, 10000, nextSB, 'south');
-		
-		
+				refreshNB = setInterval(metro.ttl, 60000, nextNB, 'north'),
+				refreshSB = setInterval(metro.ttl, 60000, nextSB, 'south');
 	},
 	ttl: function (t, dir) {
 		var ttl = metro.delta(t);
 		if (ttl >= 0) {
-			x$('#' + dir + ' .relative').html(metro.relativeTS(ttl));
+			var relMsg = document.querySelector('#' + dir + ' .relative');
+			relMsg.innerHTML = metro.relativeTS(ttl);
 		}
 	},
 	delta: function (t) {
@@ -29,4 +28,4 @@ var metro = {
 	}
 };
 
-x$(window).load(metro.init);
+document.addEventListener('DOMContentLoaded', metro.init, false);
