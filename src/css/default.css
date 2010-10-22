@@ -78,6 +78,8 @@ h1 {
 .route nav li:hover {
 	cursor: pointer;
 	-moz-box-shadow: 0 0 2px rgba(0, 0, 0, .25);
+	-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .25);
+	box-shadow: 0 0 2px rgba(0, 0, 0, .25);
 }	
 
 .route nav .current {
