@@ -1,0 +1,76 @@
+body {
+	text-transform: uppercase;
+	width: 18em;
+	margin: 2em auto;
+}
+
+#logo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: rgb(164, 5, 22);
+	font-size: 1.25em;
+	text-align: center;
+	font-style: normal;
+	font-weight: bold;
+	color: #000;
+}
+
+#logo span {
+	font-style: italic;
+	color: #fff;
+}
+
+h1 {
+	font-size: 2em;
+	color: #aaa;
+}
+
+.route {
+	margin: 2em 0;
+}
+
+.route h2 {
+	font-size: 2em;
+}
+
+.route time {
+	font-size: 4em;
+	display: block;
+	line-height: 1;
+	color: #222;
+}
+
+.route .relative {
+	display: block;
+	margin-top: -.5em;
+	margin-right: 1em;
+	color: #aaa;
+	text-align: right;
+}
+
+.arrow {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -5px;
+	display: block;
+	height: 0;
+	width: 0;
+	text-decoration: none;
+	text-indent: -9999px;
+	border: 15px solid transparent;
+}
+
+#prev {
+	margin-left: -11em;
+	border-right-color: rgb(164, 5, 22);
+	border-left: none;
+}
+
+#next {
+	margin-left: 9em;
+	border-left-color: rgb(164, 5, 22);
+	border-right none;
+}

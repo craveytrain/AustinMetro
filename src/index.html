@@ -32,11 +32,12 @@
 </head>
 
 <body>
-	<em class="logo">MetroRail</em>
+	<em id="logo">Metro<span>Rail</span></em>
 	
 	<h1>Lakeline</h1>
-	<label id="changeStation" for="changeStn">
-		<select id="changeStn" name="changeStn">
+	
+	<label id="changeStation" for="station">Change Station:
+		<select id="station" name="changeStn">
 			<option>Leander</option>
 			<option selected>Lakeline</option>
 			<option>Howard</option>
@@ -47,20 +48,27 @@
 			<option>Plaza Saltillo</option>
 			<option>Downtown</option>
 		</select>
+	</label>
 	
-	<section id="southbound">
+	<section class="route" id="south">
 		<h2>Southbound</h2>
-		<p><time>8:09 AM</time></p>
+		<p>
+			<time>12:09 AM</time>
+			<span class="relative">in 4 minutes</span>
+		</p>
 	</section>
 	
-	<section id="northbound">
+	<section class="route" id="north">
 		<h2>Northbound</h2>
-		<p><time>8:45 AM</time></p>
+		<p>
+			<time>12:45 AM</time>
+			<span class="relative">in 40 minutes</span>
+		</p>
 	</section>
 	
 	<nav>
-		<a id="prev" href="">Previous</a>
-		<a id="next" href="">Next</a>
+		<a id="prev" class="arrow" href="">Previous</a>
+		<a id="next" class="arrow" href="">Next</a>
 	</nav>
 
 
