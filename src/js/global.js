@@ -51,11 +51,19 @@ var metro = {
 			var route = document.querySelector('#' + dir),
 					time = route.querySelector('time'),
 					relativeMsg = route.querySelector('.relative'),
-					available = route.querySelector('nav ol');
+					nextRoutes = route.querySelector('nav ol'),
+					l = metro[dir].available.length,
+					available = '';
 			
 			time.innerHTML = metro[dir].time;
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
 			
+			for (var i = 0; i < l; i++) {
+				var t = metro[dir].available[i];
+				available += '<li>' + t.substring(0, t.length - 3) + '</li>';
+			}
+			
+			nextRoutes.innerHTML = available;
 		}
 	},
 	compareTime: function (t) {
