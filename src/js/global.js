@@ -10,6 +10,7 @@ var metro = {
 		next: '',
 		ttl: ''
 	},
+	refresh: {},
 	init: function () {
 		// First things first, cache the station
 		metro.station = metro.getStation();
@@ -22,17 +23,13 @@ var metro = {
 			// Find the direction, get the schedule, find the next ride and show it
 			var dir = aRoutes[l].id;
 			metro[dir].available = metro.getSchedule(dir, metro.station);
-			metro.next.find(dir);
-			metro.next.show(dir);
+			metro.next.set(dir);
+			metro.refresh[dir] = setInterval(metro.next.set, 60000, dir);
 		}
-	
-/*
-		var refreshNB = setInterval(metro.ttl, 60000, nextNB, 'north'),
-				refreshSB = setInterval(metro.ttl, 60000, nextSB, 'south');
-*/				
 	},
 	next: {
 		find: function () {
+			// TODO: figoure out what to do when there are no trains left in the day
 			var memo = 0;
 
 			var next = function (dir) {
@@ -47,6 +44,10 @@ var metro = {
 			};
 			return next;
 		}(),
+		set: function (dir) {
+			metro.next.find(dir);
+			metro.next.show(dir);
+		},
 		show: function (dir) {
 			var route = document.querySelector('#' + dir),
 					time = route.querySelector('time'),
