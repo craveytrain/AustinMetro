@@ -1,12 +1,12 @@
 var metro = {
 	station: '',
 	north: {
-		schedule: [],
+		available: [],
 		next: '',
 		ttl: ''
 	},
 	south: {
-		schedule: [],
+		available: [],
 		next: '',
 		ttl: ''
 	},
@@ -21,7 +21,7 @@ var metro = {
 		while (l--) {
 			// Find the direction, get the schedule, find the next ride and show it
 			var dir = aRoutes[l].id;
-			metro[dir].schedule = metro.getSchedule(dir, metro.station);
+			metro[dir].available = metro.getSchedule(dir, metro.station);
 			metro.next.find(dir);
 			metro.next.show(dir);
 		}
@@ -36,13 +36,13 @@ var metro = {
 			var memo = 0;
 
 			var next = function (dir) {
-				metro[dir].ttl = metro.compareTime(metro[dir].schedule[memo]);
+				metro[dir].ttl = metro.compareTime(metro[dir].available[memo]);
 
 				if (metro[dir].ttl < 0) {
-					memo = memo + 1;
+					metro[dir].available.shift();
 					next(dir);
 				}
-				metro[dir].time = metro[dir].schedule[memo];
+				metro[dir].time = metro[dir].available[memo];
 				return;
 			};
 			return next;
