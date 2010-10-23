@@ -50,7 +50,8 @@ var metro = {
 		show: function (dir) {
 			var route = document.querySelector('#' + dir),
 					time = route.querySelector('time'),
-					relativeMsg = route.querySelector('.relative');
+					relativeMsg = route.querySelector('.relative'),
+					available = route.querySelector('nav ol');
 			
 			time.innerHTML = metro[dir].time;
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
