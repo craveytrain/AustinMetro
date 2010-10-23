@@ -28,6 +28,7 @@ h1 {
 }
 
 .route {
+	overflow: hidden;
 	margin: 2em 0;
 }
 
@@ -67,12 +68,18 @@ h1 {
 }
 
 .route nav li {
-	display: inline-block;
+	display: block;
+	float: left;
 	width: 3em;
+	margin-right: .55em;
 	line-height: 2em;
 	text-align: center;
 	border: 1px solid #ddd;
 	box-shadow: 10px 10px 5px #888;
+}
+
+.route nav li:last-child {
+	margin-right: 0;
 }
 
 .route nav li:hover {
