@@ -141,7 +141,8 @@ Date.prototype.to12HourString = function () {
 			mins = this.getMinutes();
 			
 	hours = (hours > 12) ? hours - 12 : hours;
-	hours = (hours === 0) ? hours + 12: hours;
+	hours = (hours === 0) ? hours + 12 : hours;
+	mins = (mins < 10) ? '0' + mins : mins;
 	
 	return hours + ':' + mins;
 };
