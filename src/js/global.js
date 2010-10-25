@@ -117,9 +117,6 @@ var metro = {
 			metro[dir].ttl = metro.compareTime(metro[dir].time);
 			
 			metro.next.show(dir);
-			
-					
-			// TODO: change it up
 		}
 	},
 	getStation: function () {
