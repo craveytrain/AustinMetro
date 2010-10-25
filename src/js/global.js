@@ -1,15 +1,5 @@
 var metro = {
 	station: '',
-	north: {
-		available: [],
-		next: '',
-		ttl: ''
-	},
-	south: {
-		available: [],
-		next: '',
-		ttl: ''
-	},
 	refresh: {},
 	init: function () {
 		// First things first, cache the station
@@ -22,41 +12,39 @@ var metro = {
 		while (l--) {
 			// Find the direction, get the schedule, find the next ride and show it
 			var dir = aRoutes[l].id;
-			metro[dir].available = metro.getSchedule(dir, metro.station);
+			metro.setup(dir);
 			metro.next.set(dir);
 			metro.refresh[dir] = setInterval(metro.next.set, 60000, dir);
 		}
 	},
+	setup: function (dir) {
+		// Create directional data objects
+		metro[dir] = {
+			available: metro.getSchedule(dir, metro.station),
+			time: new Date,
+			index: 0
+		};
+	},
 	next: {
-		find: function () {
-			var memo = 0;
+		find: function (dir) {
+			if (metro[dir].index === metro[dir].available.length) {
+				metro[dir].index = 0;
+				metro[dir].time.setDate(metro[dir].time.getDate() + 1);
+			}
 
-			var check = function (dir) {
-				metro[dir].time = new Date;
-										
-				if (memo === metro[dir].available.length) {
-					memo = 0;
-					metro[dir].time.setDate(metro[dir].time.getDate() + 1);
-				}
+			var aTime = metro[dir].available[metro[dir].index].split(':');
+			
+			metro[dir].time.setHours(aTime[0]);
 
-				var aTime = metro[dir].available[memo].split(':');
-				
-				metro[dir].time.setHours(aTime[0]);
+			metro[dir].time.setMinutes(aTime[1]);
 
-				metro[dir].time.setMinutes(aTime[1]);
-
-				metro[dir].ttl = metro.compareTime(metro[dir].time);
-				
-				if (metro[dir].ttl < 0) {
-					memo = memo + 1;
-					check(dir);
-				}
-				
-				memo = 0;
-				return;
-			};
-			return check;
-		}(),
+			metro[dir].ttl = metro.compareTime(metro[dir].time);
+			
+			if (metro[dir].ttl < 0) {
+				metro[dir].index++;
+				metro.next.find(dir);
+			}
+		},
 		set: function (dir) {
 			metro.next.find(dir);
 			metro.next.show(dir);
@@ -65,15 +53,14 @@ var metro = {
 			var route = document.querySelector('#' + dir),
 					time = route.querySelector('time'),
 					relativeMsg = route.querySelector('.relative'),
-					nextRoutes = route.querySelector('nav ol'),
+					nextRoutes = route.querySelector('nav'),
 					available = '';
 			
 			time.innerHTML = metro[dir].time.to12HourPeriodString();
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
 			
-			
 			// Show current and next 5
-			for (var i = 0; i < 5; i++) {
+			for (var i = metro[dir].index; i < (i + 5); i++) {
 				if (typeof metro[dir].available[i] === 'undefined') break;
 				var t = metro.format.to12Hour(metro[dir].available[i]),
 						selected = (t == metro[dir].time.to12HourString()) ? ' class="selected"' : '';
@@ -81,9 +68,11 @@ var metro = {
 				available += '<li' + selected + '>' + t + '</li>';
 			}
 			
-			nextRoutes.innerHTML = available;
+			available = '<ol>' + available + '</ol>';
 			
-			nextRoutes.addEventListener('click', metro.init, false);
+			nextRoutes.innerHTML = available;
+						
+			nextRoutes.addEventListener('click', metro.seeNextTrain, false);
 		}
 	},
 	compareTime: function (then) {
@@ -109,7 +98,17 @@ var metro = {
 		}
 	},
 	seeNextTrain: function (e) {
-		console.log('opa!');
+		if (e.target.tagName.toLowerCase() === 'li') {
+			var aTime = e.target.childNodes[0].nodeValue.split(':');
+			
+			console.log(aTime);
+			
+			// TODO: figure out direction to set these values, crawl up the DOM?
+			// metro[dir].time.setHours(aTime[0]);
+			// metro[dir].time.setMinutes(aTime[1]);
+			// metro[dir].ttl = metro.compareTime(metro[dir].time);
+			
+		}
 	},
 	getStation: function () {
 		// TODO: detect real station
