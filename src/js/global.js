@@ -14,7 +14,14 @@ var metro = {
 			var dir = aRoutes[l].id;
 			metro.setup(dir);
 			metro.next.set(dir);
-			metro.refresh[dir] = setInterval(metro.next.set, 60000, dir);
+			metro[dir].refresh = setInterval(metro.next.set, 60000, dir);
+			
+			var nextNav = document.querySelectorAll('.route nav'),
+					i = nextNav.length;
+
+			while (i--) {
+				nextNav[i].addEventListener('click', metro.seeNextTrain, false);
+			}
 		}
 	},
 	setup: function (dir) {
@@ -60,19 +67,19 @@ var metro = {
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
 			
 			// Show current and next 5
-			for (var i = metro[dir].index; i < (i + 5); i++) {
+			var i = metro[dir].index,
+					cap = i + 5;
+			for (; i < cap; i++) {
 				if (typeof metro[dir].available[i] === 'undefined') break;
 				var t = metro.format.to12Hour(metro[dir].available[i]),
 						selected = (t == metro[dir].time.to12HourString()) ? ' class="selected"' : '';
 				
-				available += '<li' + selected + '>' + t + '</li>';
+				available += '<li' + selected + ' data-time="' + metro[dir].available[i] + '">' + t + '</li>';
 			}
 			
 			available = '<ol>' + available + '</ol>';
 			
 			nextRoutes.innerHTML = available;
-						
-			nextRoutes.addEventListener('click', metro.seeNextTrain, false);
 		}
 	},
 	compareTime: function (then) {
@@ -83,9 +90,9 @@ var metro = {
 	relativeTS: function (d) {
 		if (d === 0) return 'any second now';
 		if (d === 1) return 'in 1 minute';
-		if (d < 90) return 'in ' + d + ' minutes';
+		if (d < 120) return 'in ' + d + ' minutes';
 		
-		return 'in ' + Math.floor(d / 60) + ' hours';
+		return 'in about ' + Math.floor(d / 60) + ' hours';
 	},
 	format: {
 		to12Hour: function (t) {
@@ -98,9 +105,19 @@ var metro = {
 		}
 	},
 	seeNextTrain: function (e) {
-		if (e.target.tagName.toLowerCase() === 'li') {
-			var aTime = e.target.childNodes[0].nodeValue.split(':'),
-					dir = this.parentNode.id;
+		var clicked = e.target;
+		if (clicked.tagName.toLowerCase() === 'li') {
+			var dir = this.parentNode.id,
+					aTime = clicked.getAttribute('data-time').split(':');
+					
+			metro[dir].time.setHours(aTime[0]);
+
+			metro[dir].time.setMinutes(aTime[1]);
+
+			metro[dir].ttl = metro.compareTime(metro[dir].time);
+			
+			metro.next.show(dir);
+			
 					
 			// TODO: change it up
 		}
