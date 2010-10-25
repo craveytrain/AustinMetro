@@ -99,15 +99,10 @@ var metro = {
 	},
 	seeNextTrain: function (e) {
 		if (e.target.tagName.toLowerCase() === 'li') {
-			var aTime = e.target.childNodes[0].nodeValue.split(':');
-			
-			console.log(aTime);
-			
-			// TODO: figure out direction to set these values, crawl up the DOM?
-			// metro[dir].time.setHours(aTime[0]);
-			// metro[dir].time.setMinutes(aTime[1]);
-			// metro[dir].ttl = metro.compareTime(metro[dir].time);
-			
+			var aTime = e.target.childNodes[0].nodeValue.split(':'),
+					dir = this.parentNode.id;
+					
+			// TODO: change it up
 		}
 	},
 	getStation: function () {
