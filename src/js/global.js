@@ -75,11 +75,15 @@ var metro = {
 			// Show current and next 5
 			for (var i = 0; i < 5; i++) {
 				if (typeof metro[dir].available[i] === 'undefined') break;
-				var t = metro.format.to12Hour(metro[dir].available[i]);
-				available += '<li>' + t + '</li>';
+				var t = metro.format.to12Hour(metro[dir].available[i]),
+						selected = (t == metro[dir].time.to12HourString()) ? ' class="selected"' : '';
+				
+				available += '<li' + selected + '>' + t + '</li>';
 			}
 			
 			nextRoutes.innerHTML = available;
+			
+			nextRoutes.addEventListener('click', metro.init, false);
 		}
 	},
 	compareTime: function (then) {
@@ -103,6 +107,9 @@ var metro = {
 			
 			return hours + ':' + aTime[1];
 		}
+	},
+	seeNextTrain: function (e) {
+		console.log('opa!');
 	},
 	getStation: function () {
 		// TODO: detect real station

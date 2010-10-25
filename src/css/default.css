@@ -78,7 +78,7 @@ h1 {
 	box-shadow: 10px 10px 5px #888;
 }
 
-.route nav li:first-child {
+.route nav .selected {
 	margin-left: 0;
 	background: rgb(164, 5, 22);
 	color: #fff;
