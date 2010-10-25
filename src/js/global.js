@@ -29,20 +29,33 @@ var metro = {
 	},
 	next: {
 		find: function () {
-			// TODO: figoure out what to do when there are no trains left in the day
 			var memo = 0;
 
-			var next = function (dir) {
-				metro[dir].ttl = metro.compareTime(metro[dir].available[memo]);
-
-				if (metro[dir].ttl < 0) {
-					metro[dir].available.shift();
-					next(dir);
+			var check = function (dir) {
+				metro[dir].time = new Date;
+										
+				if (memo === metro[dir].available.length) {
+					memo = 0;
+					metro[dir].time.setDate(metro[dir].time.getDate() + 1);
 				}
-				metro[dir].time = metro[dir].available[memo];
+
+				var aTime = metro[dir].available[memo].split(':');
+				
+				metro[dir].time.setHours(aTime[0]);
+
+				metro[dir].time.setMinutes(aTime[1]);
+
+				metro[dir].ttl = metro.compareTime(metro[dir].time);
+				
+				if (metro[dir].ttl < 0) {
+					memo = memo + 1;
+					check(dir);
+				}
+				
+				memo = 0;
 				return;
 			};
-			return next;
+			return check;
 		}(),
 		set: function (dir) {
 			metro.next.find(dir);
@@ -53,36 +66,43 @@ var metro = {
 					time = route.querySelector('time'),
 					relativeMsg = route.querySelector('.relative'),
 					nextRoutes = route.querySelector('nav ol'),
-					l = metro[dir].available.length,
 					available = '';
 			
-			time.innerHTML = metro[dir].time;
+			time.innerHTML = metro[dir].time.to12HourPeriodString();
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
 			
-			for (var i = 0; i < l; i++) {
-				var t = metro[dir].available[i];
-				available += '<li>' + t.substring(0, t.length - 3) + '</li>';
+			
+			// Show current and next 5
+			for (var i = 0; i < 5; i++) {
+				if (typeof metro[dir].available[i] === 'undefined') break;
+				var t = metro.format.to12Hour(metro[dir].available[i]);
+				available += '<li>' + t + '</li>';
 			}
 			
 			nextRoutes.innerHTML = available;
 		}
 	},
-	compareTime: function (t) {
-		var now = new Date,
-				then = new Date;
+	compareTime: function (then) {
+		var now = new Date;
 				
-		// TODO: remove this line
-		now.setTime(Date.parse(then.toDateString() + ' ' + '6:20 AM'));
-				
-		if (t) then.setTime(Date.parse(then.toDateString() + ' ' + t));
-		
 		return Math.floor((then - now) / 60000);
 	},
 	relativeTS: function (d) {
 		if (d === 0) return 'any second now';
 		if (d === 1) return 'in 1 minute';
 		if (d < 90) return 'in ' + d + ' minutes';
-		if (d < 1440) return 'in ' + Math.floor(d / 60) + ' hours';
+		
+		return 'in ' + Math.floor(d / 60) + ' hours';
+	},
+	format: {
+		to12Hour: function (t) {
+			var aTime = t.split(':'),
+					hours = (aTime[0] > 12) ? aTime[0] - 12 : aTime[0];
+					
+			if (hours === '0') hours = '12';
+			
+			return hours + ':' + aTime[1];
+		}
 	},
 	getStation: function () {
 		// TODO: detect real station
@@ -96,30 +116,48 @@ var metro = {
 
 document.addEventListener('DOMContentLoaded', metro.init, false);
 
+// Time formatting functions
+// Spit out simple 12 hour format
+Date.prototype.to12HourString = function () {
+	var hours = this.getHours(),
+			mins = this.getMinutes();
+			
+	hours = (hours > 12) ? hours - 12 : hours;
+	hours = (hours === 0) ? hours + 12: hours;
+	
+	return hours + ':' + mins;
+};
+
+// Add period to 12 hour format
+Date.prototype.to12HourPeriodString = function () {
+	var period = (this.getHours() < 12) ? ' AM' : ' PM';
+	
+	return this.to12HourString() + period;
+};
 
 /* Temp Data */
 metro.data = {
 	south: {
-		Leander: ['5:25 AM', '6:00 AM', '6:35 AM', '7:10 AM', '7:54 AM'],
-		Lakeline: ['5:40 AM', '6:15 AM', '6:50 AM', '7:25 AM', '8:09 AM'],
-		Howard: ['5:53 AM', '6:28 AM', '7:03 AM', '7:38 AM', '8:02 AM', '8:22 AM'],
-		Kramer: ['6:00 AM', '6:35 AM', '7:10 AM', '7:45 AM', '8:08 AM', '8:29 AM'],
-		Crestvew: ['6:07 AM', '6:42 AM', '7:17 AM', '7:52 AM', '8:15 AM', '8:36 AM'],
-		Highland: ['6:10 AM', '6:45 AM', '7:20 AM', '7:55 AM', '8:18 AM', '8:39 AM'],
-		MLKJr: ['6:17 AM', '6:52 AM', '7:27 AM', '8:02 AM', '8:25 AM', '8:46 AM'],
-		PlazaSaltillo: ['6:23 AM', '6:58 AM', '7:33 AM', '8:08 AM', '8:31 AM', '8:52 AM'],
-		Downtown: ['6:27 AM', '7:02 AM', '7:37 AM', '8:12 AM', '8:35 AM', '8:56 AM']
+		Leander: ['5:25', '6:00', '6:35', '7:10', '7:54'],
+		Lakeline: ['5:40', '6:15', '6:50', '7:25', '8:09'],
+		Howard: ['5:53', '6:28', '7:03', '7:38', '8:02', '8:22'],
+		Kramer: ['6:00', '6:35', '7:10', '7:45', '8:08', '8:29'],
+		Crestvew: ['6:07', '6:42', '7:17', '7:52', '8:15', '8:36'],
+		Highland: ['6:10', '6:45', '7:20', '7:55', '8:18', '8:39'],
+		MLKJr: ['6:17', '6:52', '7:27', '8:02', '8:25', '8:46'],
+		PlazaSaltillo: ['6:23', '6:58', '7:33', '8:08', '8:31', '8:52'],
+		Downtown: ['6:27', '7:02', '7:37', '8:12', '8:35', '8:56']
 	},
 	north: {
-		Leander: ['7:43 AM'],
-		Lakeline: ['7:29 AM'],
-		Howard: ['7:16 AM', '7:50 AM'],
-		Kramer: ['7:07 AM', '7:44 AM'],
-		Crestvew: ['7:01 AM', '7:37 AM', '9:25 AM'],
-		Highland: ['6:58 AM', '7:34 AM', '9:22 AM'],
-		MLKJr: ['6:51 AM', '7:27 AM', '9:15 AM'],
-		PlazaSaltillo: ['6:43 AM', '7:19 AM', '9:07 AM'],
-		Downtown: ['6:41 AM', '7:17 AM', '9:05 AM']
+		Leander: ['7:43'],
+		Lakeline: ['7:29'],
+		Howard: ['7:16', '7:50'],
+		Kramer: ['7:07', '7:44'],
+		Crestvew: ['7:01', '7:37', '9:25'],
+		Highland: ['6:58', '7:34', '9:22'],
+		MLKJr: ['6:51', '7:27', '9:15'],
+		PlazaSaltillo: ['6:43', '7:19', '9:07'],
+		Downtown: ['6:41', '7:17', '9:05']
 		
 	}
 };
