@@ -123,14 +123,23 @@ var metro = {
 	geo: {
 		get: function () {
 			navigator.geolocation.getCurrentPosition(function(pos) {
+				var stations = metro.data.stations;
 				metro.user = {
+					distanceTo: {},
 					pos: [pos.coords.latitude, pos.coords.longitude]
-				};
+ 				};
 
-				console.log(metro.geo.distance(metro.user.pos, metro.data.stations.Lakeline));
+				for (var station in stations) {
+					if (stations.hasOwnProperty(station)) {
+						metro.user.distanceTo[station] = metro.geo.distance(metro.user.pos, stations[station]);
+					}
+				}
 
 				// TODO: now do something with it
 				// TODO: add watch for change
+			},
+			function(err){
+				console.log('something is rotten in the state of Denmark');
 			});
 			
 			// TODO: get location for reals
@@ -138,6 +147,7 @@ var metro = {
 		},
 		distance: function (coord1, coord2, precision) {
 			// default 4 sig figs reflects typical 0.3% accuracy of spherical model
+			// borrowed from http://www.movable-type.co.uk/scripts/latlong.html
 		  precision = precision || 4;  
 
 		  var R = 6371;
@@ -182,7 +192,7 @@ Date.prototype.to12HourPeriodString = function () {
 	return this.to12HourString() + period;
 };
 
-// Extend Math methods
+// Extend Math methods (borrowed from http://www.movable-type.co.uk/scripts/latlong.html)
 // Convert numeric degrees to radians
 if (typeof Number.prototype.toRad === 'undefined') {
 	Number.prototype.toRad = function() {
@@ -257,6 +267,6 @@ metro.data = {
 		Highland: [30.328601, -97.716203],
 		MLKJr: [30.279818, -97.709031],
 		PlazaSaltillo: [30.262242, -97.727578],
-		Downtown: [30.338028, -97.773734]
+		Downtown: [30.265012, -97.739296]
 	}
 };
