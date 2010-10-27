@@ -57,7 +57,10 @@ var metro = {
 					time = route.querySelector('time'),
 					relativeMsg = route.querySelector('.relative'),
 					nextRoutes = route.querySelector('nav'),
-					available = '';
+					available = '',
+					station = document.getElementById('nearestStation');
+			
+			station.innerHTML = metro.nearestStation;
 			
 			time.innerHTML = metro[dir].time.to12HourPeriodString();
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
