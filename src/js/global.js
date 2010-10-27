@@ -1,11 +1,6 @@
 var metro = {
-	station: '',
 	refresh: {},
 	init: function () {
-		// First things first, cache the station
-		metro.station = "Lakeline";
-		metro.geo.get();
-		
 		// Find all the directions
 		var aRoutes = document.querySelectorAll('.route'),
 				l = aRoutes.length;
@@ -132,18 +127,26 @@ var metro = {
 				for (var station in stations) {
 					if (stations.hasOwnProperty(station)) {
 						metro.user.distanceTo[station] = metro.geo.distance(metro.user.pos, stations[station]);
+						console.log(station);
+						console.log(metro.user.distanceTo[station]);
+						console.log(metro.user.distanceTo[metro.station]);
+						if (typeof metro.station === 'undefined') {
+							metro.station = station;
+							// TODO: Why isn't this calculating correctly?
+						} else if (metro.user.distanceTo[station] < metro.user.distanceTo[metro.station]) {
+							metro.station = station;
+						}
+						console.log(metro.station);
 					}
 				}
+				metro.init();
 
-				// TODO: now do something with it
 				// TODO: add watch for change
 			},
 			function(err){
+				// TODO: do some real error checking
 				console.log('something is rotten in the state of Denmark');
 			});
-			
-			// TODO: get location for reals
-			// return 'Lakeline';
 		},
 		distance: function (coord1, coord2, precision) {
 			// default 4 sig figs reflects typical 0.3% accuracy of spherical model
@@ -169,8 +172,6 @@ var metro = {
 		return metro.data[dir][station];
 	}
 };
-
-document.addEventListener('DOMContentLoaded', metro.init, false);
 
 // Time formatting functions
 // Spit out simple 12 hour format
@@ -232,6 +233,8 @@ if (typeof(Number.prototype.toPrecisionFixed) === 'undefined') {
     return sign + n;
   };
 }
+
+document.addEventListener('DOMContentLoaded', metro.geo.get, false);
 
 /* Temp Data */
 metro.data = {
