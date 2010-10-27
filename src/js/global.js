@@ -58,9 +58,18 @@ var metro = {
 					relativeMsg = route.querySelector('.relative'),
 					nextRoutes = route.querySelector('nav'),
 					available = '',
-					station = document.getElementById('nearestStation');
+					station = document.getElementById('nearestStation'),
+					stationDropDown = document.getElementById('station'),
+					l = stationDropDown.options.length;
 			
 			station.innerHTML = metro.nearestStation;
+			
+			while (l--) {
+				if (stationDropDown.options[l].value === metro.nearestStation) {
+					stationDropDown.options[l].selected = true;
+					break;
+				}
+			}
 			
 			time.innerHTML = metro[dir].time.to12HourPeriodString();
 			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
