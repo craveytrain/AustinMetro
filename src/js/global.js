@@ -23,7 +23,7 @@ var metro = {
 	setup: function (dir) {
 		// Create directional data objects
 		metro[dir] = {
-			available: metro.getSchedule(dir, metro.station),
+			available: metro.getSchedule(dir, metro.nearestStation),
 			time: new Date,
 			index: 0
 		};
@@ -118,25 +118,20 @@ var metro = {
 	geo: {
 		get: function () {
 			navigator.geolocation.getCurrentPosition(function(pos) {
-				var stations = metro.data.stations;
+				var stationList = metro.data.stations;
 				metro.user = {
 					distanceTo: {},
 					pos: [pos.coords.latitude, pos.coords.longitude]
  				};
 
-				for (var station in stations) {
-					if (stations.hasOwnProperty(station)) {
-						metro.user.distanceTo[station] = metro.geo.distance(metro.user.pos, stations[station]);
-						console.log(station);
-						console.log(metro.user.distanceTo[station]);
-						console.log(metro.user.distanceTo[metro.station]);
-						if (typeof metro.station === 'undefined') {
-							metro.station = station;
-							// TODO: Why isn't this calculating correctly?
-						} else if (metro.user.distanceTo[station] < metro.user.distanceTo[metro.station]) {
-							metro.station = station;
+				for (var station in stationList) {
+					if (stationList.hasOwnProperty(station)) {
+						metro.user.distanceTo[station] = +metro.geo.distance(metro.user.pos, stationList[station]);
+						if (typeof metro.nearestStation === 'undefined') {
+							metro.nearestStation = station;
+						} else if (metro.user.distanceTo[station] < metro.user.distanceTo[metro.nearestStation]) {
+							metro.nearestStation = station;
 						}
-						console.log(metro.station);
 					}
 				}
 				metro.init();
