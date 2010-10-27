@@ -1,4 +1,7 @@
 Austin Metro
 ============
+Changelog:
+v.09 - Station drop down updating based on nearest station
 
-This is a test. Hopefully it will be something some day, but for now, it's just a test.
+Roadmap:
+v.1 - Add onchange listener for drop down

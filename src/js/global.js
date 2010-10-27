@@ -18,6 +18,7 @@ var metro = {
 			while (i--) {
 				nextNav[i].addEventListener('click', metro.seeNextTrain, false);
 			}
+			// TODO: add onchange lisnter for drop down
 		}
 	},
 	setup: function (dir) {
