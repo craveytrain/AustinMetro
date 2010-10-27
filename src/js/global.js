@@ -3,8 +3,9 @@ var metro = {
 	refresh: {},
 	init: function () {
 		// First things first, cache the station
-		metro.station = metro.getStation();
-	
+		metro.station = "Lakeline";
+		metro.geo.get();
+		
 		// Find all the directions
 		var aRoutes = document.querySelectorAll('.route'),
 				l = aRoutes.length;
@@ -119,9 +120,39 @@ var metro = {
 			metro.next.show(dir);
 		}
 	},
-	getStation: function () {
-		// TODO: detect real station
-		return 'Lakeline';
+	geo: {
+		get: function () {
+			navigator.geolocation.getCurrentPosition(function(pos) {
+				metro.user = {
+					pos: [pos.coords.latitude, pos.coords.longitude]
+				};
+
+				console.log(metro.geo.distance(metro.user.pos, metro.data.stations.Lakeline));
+
+				// TODO: now do something with it
+				// TODO: add watch for change
+			});
+			
+			// TODO: get location for reals
+			// return 'Lakeline';
+		},
+		distance: function (coord1, coord2, precision) {
+			// default 4 sig figs reflects typical 0.3% accuracy of spherical model
+		  precision = precision || 4;  
+
+		  var R = 6371;
+		  var lat1 = coord1[0].toRad(), lon1 = coord1[1].toRad();
+		  var lat2 = coord2[0].toRad(), lon2 =coord2[1].toRad();
+		  var dLat = lat2 - lat1;
+		  var dLon = lon2 - lon1;
+
+		  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+		          Math.cos(lat1) * Math.cos(lat2) * 
+		          Math.sin(dLon/2) * Math.sin(dLon/2);
+		  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		  var d = R * c;
+		  return d.toPrecisionFixed(precision);
+		}
 	},
 	getSchedule: function (dir, station) {
 		// TODO: get list from somewhere
@@ -150,6 +181,47 @@ Date.prototype.to12HourPeriodString = function () {
 	
 	return this.to12HourString() + period;
 };
+
+// Extend Math methods
+// Convert numeric degrees to radians
+if (typeof Number.prototype.toRad === 'undefined') {
+	Number.prototype.toRad = function() {
+	  return this * Math.PI / 180;
+	};
+}
+
+// Convert radians to numeric (signed) degrees
+if (typeof Number.prototype.toDeg === 'undefined') {
+	Number.prototype.toDeg = function() {
+	  return this * 180 / Math.PI;
+	};
+}
+/** 
+ * Format the significant digits of a number, using only fixed-point notation (no exponential)
+ * 
+ * @param   {Number} precision: Number of significant digits to appear in the returned string
+ * @returns {String} A string representation of number which contains precision significant digits
+ */
+if (typeof(Number.prototype.toPrecisionFixed) === 'undefined') {
+  Number.prototype.toPrecisionFixed = function(precision) {
+    var numb = this < 0 ? -this : this;  // can't take log of -ve number...
+    var sign = this < 0 ? '-' : '';
+    
+    if (numb == 0) { n = '0.'; while (precision--) n += '0'; return n; };  // can't take log of zero
+  
+    var scale = Math.ceil(Math.log(numb)*Math.LOG10E);  // no of digits before decimal
+    var n = String(Math.round(numb * Math.pow(10, precision-scale)));
+    if (scale > 0) {  // add trailing zeros & insert decimal as required
+      l = scale - n.length;
+      while (l-- > 0) n = n + '0';
+      if (scale < n.length) n = n.slice(0,scale) + '.' + n.slice(scale);
+    } else {          // prefix decimal and leading zeros if required
+      while (scale++ < 0) n = '0' + n;
+      n = '0.' + n;
+    }
+    return sign + n;
+  };
+}
 
 /* Temp Data */
 metro.data = {
