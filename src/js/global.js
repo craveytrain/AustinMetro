@@ -3,14 +3,15 @@ var metro = {
 	init: function () {
 		// Find all the directions
 		var aRoutes = document.querySelectorAll('.route'),
-				l = aRoutes.length;
+				l = aRoutes.length,
+				stations = document.getElementById('station');
 	
 		while (l--) {
 			// Find the direction, get the schedule, find the next ride and show it
 			var dir = aRoutes[l].id;
 			metro.setup(dir);
 			metro.next.set(dir);
-			metro[dir].refresh = setInterval(metro.next.set, 60000, dir);
+			metro[metro.route][dir].refresh = setInterval(metro.next.set, 60000, dir);
 			
 			var nextNav = document.querySelectorAll('.route nav'),
 					i = nextNav.length;
@@ -18,12 +19,14 @@ var metro = {
 			while (i--) {
 				nextNav[i].addEventListener('click', metro.seeNextTrain, false);
 			}
-			// TODO: add onchange lisnter for drop down
+			
+			stations.addEventListener('change', metro.changeStation, false);
 		}
 	},
 	setup: function (dir) {
+		metro[metro.route] = {};
 		// Create directional data objects
-		metro[dir] = {
+		metro[metro.route][dir] = {
 			available: metro.getSchedule(dir, metro.nearestStation),
 			time: new Date,
 			index: 0
@@ -31,21 +34,21 @@ var metro = {
 	},
 	next: {
 		find: function (dir) {
-			if (metro[dir].index === metro[dir].available.length) {
-				metro[dir].index = 0;
-				metro[dir].time.setDate(metro[dir].time.getDate() + 1);
+			if (metro[metro.route][dir].index === metro[metro.route][dir].available.length) {
+				metro[metro.route][dir].index = 0;
+				metro[metro.route][dir].time.setDate(metro[metro.route][dir].time.getDate() + 1);
 			}
 
-			var aTime = metro[dir].available[metro[dir].index].split(':');
+			var aTime = metro[metro.route][dir].available[metro[metro.route][dir].index].split(':');
 			
-			metro[dir].time.setHours(aTime[0]);
+			metro[metro.route][dir].time.setHours(aTime[0]);
 
-			metro[dir].time.setMinutes(aTime[1]);
+			metro[metro.route][dir].time.setMinutes(aTime[1]);
 
-			metro[dir].ttl = metro.compareTime(metro[dir].time);
+			metro[metro.route][dir].ttl = metro.compareTime(metro[metro.route][dir].time);
 			
-			if (metro[dir].ttl < 0) {
-				metro[dir].index++;
+			if (metro[metro.route][dir].ttl < 0) {
+				metro[metro.route][dir].index++;
 				metro.next.find(dir);
 			}
 		},
@@ -72,18 +75,18 @@ var metro = {
 				}
 			}
 			
-			time.innerHTML = metro[dir].time.to12HourPeriodString();
-			relativeMsg.innerHTML = metro.relativeTS(metro[dir].ttl);
+			time.innerHTML = metro[metro.route][dir].time.to12HourPeriodString();
+			relativeMsg.innerHTML = metro.relativeTS(metro[metro.route][dir].ttl);
 			
 			// Show current and next 5
-			var i = metro[dir].index,
+			var i = metro[metro.route][dir].index,
 					cap = i + 5;
 			for (; i < cap; i++) {
-				if (typeof metro[dir].available[i] === 'undefined') break;
-				var t = metro.format.to12Hour(metro[dir].available[i]),
-						selected = (t == metro[dir].time.to12HourString()) ? ' class="selected"' : '';
+				if (typeof metro[metro.route][dir].available[i] === 'undefined') break;
+				var t = metro.format.to12Hour(metro[metro.route][dir].available[i]),
+						selected = (t == metro[metro.route][dir].time.to12HourString()) ? ' class="selected"' : '';
 				
-				available += '<li' + selected + ' data-time="' + metro[dir].available[i] + '">' + t + '</li>';
+				available += '<li' + selected + ' data-time="' + metro[metro.route][dir].available[i] + '">' + t + '</li>';
 			}
 			
 			available = '<ol>' + available + '</ol>';
@@ -119,13 +122,21 @@ var metro = {
 			var dir = this.parentNode.id,
 					aTime = clicked.getAttribute('data-time').split(':');
 					
-			metro[dir].time.setHours(aTime[0]);
+			metro[metro.route][dir].time.setHours(aTime[0]);
 
-			metro[dir].time.setMinutes(aTime[1]);
+			metro[metro.route][dir].time.setMinutes(aTime[1]);
 
-			metro[dir].ttl = metro.compareTime(metro[dir].time);
+			metro[metro.route][dir].ttl = metro.compareTime(metro[metro.route][dir].time);
 			
 			metro.next.show(dir);
+		}
+	},
+	changeStation: function (e) {
+		metro.nearestStation = this.value;
+		for (dir in metro[metro.route]) {
+			if (metro[metro.route].hasOwnProperty(dir)) {
+				metro.next.set(dir);
+			}
 		}
 	},
 	geo: {
@@ -178,6 +189,9 @@ var metro = {
 	getSchedule: function (dir, station) {
 		// TODO: get list from somewhere
 		return metro.data[dir][station];
+	},
+	getRoute: function () {
+		metro.route = 'redline';
 	}
 };
 
