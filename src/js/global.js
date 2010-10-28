@@ -1,36 +1,49 @@
 var metro = {
 	refresh: {},
 	init: function () {
+		// Get route
+		metro.route = metro.getRoute();
+
+		// Create route object
+		metro[metro.route] = {};
+
+		// Get closest station
+		metro.geo.get();
+	},
+	setup: function () {
 		// Find all the directions
 		var aRoutes = document.querySelectorAll('.route'),
 				l = aRoutes.length,
 				stations = document.getElementById('station');
-	
-		while (l--) {
-			// Find the direction, get the schedule, find the next ride and show it
-			var dir = aRoutes[l].id;
-			metro.setup(dir);
-			metro.next.set(dir);
-			metro[metro.route][dir].refresh = setInterval(metro.next.set, 60000, dir);
-			
-			var nextNav = document.querySelectorAll('.route nav'),
-					i = nextNav.length;
 
-			while (i--) {
-				nextNav[i].addEventListener('click', metro.seeNextTrain, false);
-			}
-			
-			stations.addEventListener('change', metro.changeStation, false);
+		while (l--) {
+			// Find the direction
+			var dir = aRoutes[l].id;
+
+			// Create directional data objects
+			metro[metro.route][dir] = {
+				available: metro.getSchedule(dir, metro.nearestStation),
+				time: new Date,
+				index: 0
+			};
+
+			metro.next.set(dir);
+
+			// Set the time to update every minute
+			metro[metro.route][dir].refresh = window.setInterval(metro.next.set, 60000, dir, metro.route);
+		}			
+
+		// Find the next time navs
+		var nextNav = document.querySelectorAll('.route nav'),
+				i = nextNav.length;
+
+		while (i--) {
+			// Add click event listener for the navs
+			nextNav[i].addEventListener('click', metro.seeNextTrain, false);
 		}
-	},
-	setup: function (dir) {
-		metro[metro.route] = {};
-		// Create directional data objects
-		metro[metro.route][dir] = {
-			available: metro.getSchedule(dir, metro.nearestStation),
-			time: new Date,
-			index: 0
-		};
+		
+		// Add change event listener for the station drop down
+		stations.addEventListener('change', metro.changeStation, false);
 	},
 	next: {
 		find: function (dir) {
@@ -53,6 +66,7 @@ var metro = {
 			}
 		},
 		set: function (dir) {
+			console.log('ran set');
 			metro.next.find(dir);
 			metro.next.show(dir);
 		},
@@ -133,7 +147,7 @@ var metro = {
 	},
 	changeStation: function (e) {
 		metro.nearestStation = this.value;
-		for (dir in metro[metro.route]) {
+		for (var dir in metro[metro.route]) {
 			if (metro[metro.route].hasOwnProperty(dir)) {
 				metro.next.set(dir);
 			}
@@ -142,7 +156,7 @@ var metro = {
 	geo: {
 		get: function () {
 			navigator.geolocation.getCurrentPosition(function(pos) {
-				var stationList = metro.data.stations;
+				var stationList = metro.data[metro.route].stations;
 				metro.user = {
 					distanceTo: {},
 					pos: [pos.coords.latitude, pos.coords.longitude]
@@ -158,19 +172,19 @@ var metro = {
 						}
 					}
 				}
-				metro.init();
+				metro.setup();
 
 				// TODO: add watch for change
 			},
 			function(err){
 				// TODO: do some real error checking
-				console.log('something is rotten in the state of Denmark');
+				window.console.log('something is rotten in the state of Denmark');
+				metro.nearestStation = 'Lakeline';
 			});
 		},
-		distance: function (coord1, coord2, precision) {
+		distance: function (coord1, coord2) {
 			// default 4 sig figs reflects typical 0.3% accuracy of spherical model
 			// borrowed from http://www.movable-type.co.uk/scripts/latlong.html
-		  precision = precision || 4;  
 
 		  var R = 6371;
 		  var lat1 = coord1[0].toRad(), lon1 = coord1[1].toRad();
@@ -183,15 +197,15 @@ var metro = {
 		          Math.sin(dLon/2) * Math.sin(dLon/2);
 		  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		  var d = R * c;
-		  return d.toPrecisionFixed(precision);
+		  return d;
 		}
 	},
 	getSchedule: function (dir, station) {
 		// TODO: get list from somewhere
-		return metro.data[dir][station];
+		return metro.data[metro.route][dir][station];
 	},
 	getRoute: function () {
-		metro.route = 'redline';
+		return 'redline';
 	}
 };
 
@@ -229,69 +243,44 @@ if (typeof Number.prototype.toDeg === 'undefined') {
 	  return this * 180 / Math.PI;
 	};
 }
-/** 
- * Format the significant digits of a number, using only fixed-point notation (no exponential)
- * 
- * @param   {Number} precision: Number of significant digits to appear in the returned string
- * @returns {String} A string representation of number which contains precision significant digits
- */
-if (typeof(Number.prototype.toPrecisionFixed) === 'undefined') {
-  Number.prototype.toPrecisionFixed = function(precision) {
-    var numb = this < 0 ? -this : this;  // can't take log of -ve number...
-    var sign = this < 0 ? '-' : '';
-    
-    if (numb == 0) { n = '0.'; while (precision--) n += '0'; return n; };  // can't take log of zero
-  
-    var scale = Math.ceil(Math.log(numb)*Math.LOG10E);  // no of digits before decimal
-    var n = String(Math.round(numb * Math.pow(10, precision-scale)));
-    if (scale > 0) {  // add trailing zeros & insert decimal as required
-      l = scale - n.length;
-      while (l-- > 0) n = n + '0';
-      if (scale < n.length) n = n.slice(0,scale) + '.' + n.slice(scale);
-    } else {          // prefix decimal and leading zeros if required
-      while (scale++ < 0) n = '0' + n;
-      n = '0.' + n;
-    }
-    return sign + n;
-  };
-}
 
-document.addEventListener('DOMContentLoaded', metro.geo.get, false);
+document.addEventListener('DOMContentLoaded', metro.init, false);
 
 /* Temp Data */
 metro.data = {
-	south: {
-		Leander: ['5:25', '6:00', '6:35', '7:10', '7:54', '17:23'],
-		Lakeline: ['5:40', '6:15', '6:50', '7:25', '8:09', '17:37'],
-		Howard: ['5:53', '6:28', '7:03', '7:38', '8:02', '8:22', '17:15', '17:51'],
-		Kramer: ['6:00', '6:35', '7:10', '7:45', '8:08', '8:29', '17:22', '17:57'],
-		Crestvew: ['6:07', '6:42', '7:17', '7:52', '8:15', '8:36', '15:10', '16:55', '17:30', '18:05'],
-		Highland: ['6:10', '6:45', '7:20', '7:55', '8:18', '8:39', '15:13', '16:58', '17:33', '18:08'],
-		MLKJr: ['6:17', '6:52', '7:27', '8:02', '8:25', '8:46', '15:20', '17:05', '17:40', '18:15'],
-		PlazaSaltillo: ['6:23', '6:58', '7:33', '8:08', '8:31', '8:52', '15:26', '17:11', '17:46', '18:21'],
-		Downtown: ['6:27', '7:02', '7:37', '8:12', '8:35', '8:56', '15:30', '17:15', '17:50', '18:25']
-	},
-	north: {
-		Leander: ['7:43', '16:47', '17:57', '18:32', '19:07', '19:42'],
-		Lakeline: ['7:29', '16:32', '17:42', '18:17', '18:52', '19:28'],
-		Howard: ['7:16', '7:50', '16:18', '16:54', '17:28', '18:03', '18:38', '19:14'],
-		Kramer: ['7:07', '7:44', '16:12', '16:47', '17:22', '17:57', '18:32', '19:08'],
-		Crestvew: ['7:01', '7:37', '9:25', '16:05', '16:40', '17:15', '17:50', '18:25', '19:01'],
-		Highland: ['6:58', '7:34', '9:22', '16:02', '16:37', '17:12', '17:47', '18:22', '18:59'],
-		MLKJr: ['6:51', '7:27', '9:15', '15:55', '16:30', '17:05', '17:40', '18:15', '18:52'],
-		PlazaSaltillo: ['6:43', '7:19', '9:07', '15:47', '16:22', '16:57', '17:32', '18:07', '18:42'],
-		Downtown: ['6:41', '7:17', '9:05', '15:45', '16:20', '16:55', '17:30', '18:05', '18:40']
-		
-	},
-	stations: {
-		Leander: [30.586401, -97.855735],
-		Lakeline: [30.481965, -97.786517],
-		Howard: [30.397128, -97.776066],
-		Kramer: [30.392786, -97.7164],
-		Crestview:[30.338448, -97.719656],
-		Highland: [30.328601, -97.716203],
-		MLKJr: [30.279818, -97.709031],
-		PlazaSaltillo: [30.262242, -97.727578],
-		Downtown: [30.265012, -97.739296]
+	redline: {
+		south: {
+			Leander: ['5:25', '6:00', '6:35', '7:10', '7:54', '17:23'],
+			Lakeline: ['5:40', '6:15', '6:50', '7:25', '8:09', '17:37'],
+			Howard: ['5:53', '6:28', '7:03', '7:38', '8:02', '8:22', '17:15', '17:51'],
+			Kramer: ['6:00', '6:35', '7:10', '7:45', '8:08', '8:29', '17:22', '17:57'],
+			Crestvew: ['6:07', '6:42', '7:17', '7:52', '8:15', '8:36', '15:10', '16:55', '17:30', '18:05'],
+			Highland: ['6:10', '6:45', '7:20', '7:55', '8:18', '8:39', '15:13', '16:58', '17:33', '18:08'],
+			MLKJr: ['6:17', '6:52', '7:27', '8:02', '8:25', '8:46', '15:20', '17:05', '17:40', '18:15'],
+			PlazaSaltillo: ['6:23', '6:58', '7:33', '8:08', '8:31', '8:52', '15:26', '17:11', '17:46', '18:21'],
+			Downtown: ['6:27', '7:02', '7:37', '8:12', '8:35', '8:56', '15:30', '17:15', '17:50', '18:25']
+		},
+		north: {
+			Leander: ['7:43', '16:47', '17:57', '18:32', '19:07', '19:42'],
+			Lakeline: ['7:29', '16:32', '17:42', '18:17', '18:52', '19:28'],
+			Howard: ['7:16', '7:50', '16:18', '16:54', '17:28', '18:03', '18:38', '19:14'],
+			Kramer: ['7:07', '7:44', '16:12', '16:47', '17:22', '17:57', '18:32', '19:08'],
+			Crestvew: ['7:01', '7:37', '9:25', '16:05', '16:40', '17:15', '17:50', '18:25', '19:01'],
+			Highland: ['6:58', '7:34', '9:22', '16:02', '16:37', '17:12', '17:47', '18:22', '18:59'],
+			MLKJr: ['6:51', '7:27', '9:15', '15:55', '16:30', '17:05', '17:40', '18:15', '18:52'],
+			PlazaSaltillo: ['6:43', '7:19', '9:07', '15:47', '16:22', '16:57', '17:32', '18:07', '18:42'],
+			Downtown: ['6:41', '7:17', '9:05', '15:45', '16:20', '16:55', '17:30', '18:05', '18:40']
+		},
+		stations: {
+			Leander: [30.586401, -97.855735],
+			Lakeline: [30.481965, -97.786517],
+			Howard: [30.397128, -97.776066],
+			Kramer: [30.392786, -97.7164],
+			Crestview:[30.338448, -97.719656],
+			Highland: [30.328601, -97.716203],
+			MLKJr: [30.279818, -97.709031],
+			PlazaSaltillo: [30.262242, -97.727578],
+			Downtown: [30.265012, -97.739296]
+		}
 	}
 };
