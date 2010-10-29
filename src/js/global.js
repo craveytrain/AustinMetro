@@ -66,7 +66,6 @@ var metro = {
 			}
 		},
 		set: function (dir) {
-			console.log('ran set');
 			metro.next.find(dir);
 			metro.next.show(dir);
 		},
