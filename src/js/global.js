@@ -155,7 +155,7 @@ var metro = {
 	geo: {
 		get: function () {
 			navigator.geolocation.getCurrentPosition(function(pos) {
-				var stationList = metro.data[metro.route].stations;
+				var stationList = tempData[metro.route].stations;
 				metro.user = {
 					distanceTo: {},
 					pos: [pos.coords.latitude, pos.coords.longitude]
@@ -201,13 +201,49 @@ var metro = {
 	},
 	getSchedule: function (dir, station) {
 		// TODO: get list from somewhere
-		return metro.data[metro.route][dir][station];
+		return tempData[metro.route][dir][station];
 	},
 	getRoute: function () {
 		return 'redline';
 	}
 };
 
+
+/* Utils */
+metro.util = {
+	cache: {},
+	pub: function (/* String */topic, /* Array? */args) {
+		if (metro.util.cache[topic]) {
+			var l = metro.util.cache[topic].length;
+
+			for (var i = 0; i < l; i++) {
+				metro.util.cache[topic][i].apply(this, args || []);
+			}
+		}
+	},
+	sub: function (/* String */topic, /* Function */callback) {
+		if (!metro.util.cache[topic]) {
+			metro.util.cache[topic] = [];
+		}
+
+		metro.util.cache[topic].push(callback);
+		return [topic, callback]; // Array
+	},
+	unsub: function (/* Array */handle) {
+		var t = handle[0];
+		if (metro.util.cache[t]) {
+			var l = metro.util.cache[t].length;
+			
+			for (var i = 0; i < l; i++) {
+				if (metro.util.cache[t][i] == handle[1]) {
+					metro.util.cache[t].splice(i, 1);
+				}
+			}
+		}
+	}
+};
+
+/* Prototype methods */
 // Time formatting functions
 // Spit out simple 12 hour format
 Date.prototype.to12HourString = function () {
@@ -243,10 +279,11 @@ if (typeof Number.prototype.toDeg === 'undefined') {
 	};
 }
 
+/* DOM Ready Event */
 document.addEventListener('DOMContentLoaded', metro.init, false);
 
 /* Temp Data */
-metro.data = {
+tempData = {
 	redline: {
 		south: {
 			Leander: ['5:25', '6:00', '6:35', '7:10', '7:54', '17:23'],
