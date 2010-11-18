@@ -25,14 +25,53 @@ metro.route = {
 metro.station = {
 	init: function () {
 		metro.util.sub('route', metro.station.get);
+		metro.data.user = {};
 	},
-	get: function (aRoute) {
-		var station = 'Lakeline';
-		metro.station.set(station);
+	get: function (route) {
+		var data = metro.data,
+				user = data.user,
+				stations = data.route[route].stations,
+				closest, distance;
+		if (navigator.geolocation) {
+			try {
+				navigator.geolocation.getCurrentPosition(function(pos) {
+					user.pos = [pos.coords.latitude, pos.coords.longitude];
+
+					for (var station in stations) {
+						if (stations.hasOwnProperty(station)) {
+							console.log(user.station);
+							console.log(closest);
+							distance = +metro.geo.distance(user.pos, stations[station]);
+							console.log(station);
+							console.log(distance);
+							console.log('--------------');
+							if (typeof user.station === 'undefined') {
+								closest = distance;
+								metro.station.set(station);
+							} else if (distance < closest) {
+								closest = distance;
+								metro.station.set(station);
+							}
+						}
+					}
+					metro.util.pub('station', [user.station]);
+
+					// TODO: add watch for change
+				},
+				function(err){
+					metro.util.pub('noGeo');
+				});
+			} catch (err) {
+				metro.util.pub('noGeo');
+			}
+		} else {
+			metro.util.pub('noGeo');
+		}
+		
 	},
 	set: function (station) {
-		metro.data.station = station;
-		metro.util.pub('station', [station]);
+		metro.data.user.station = station;
+		// metro.util.pub('station', [station]);
 	}
 };
 
@@ -40,6 +79,7 @@ metro.station = {
 metro.util = {
 	cache: {},
 	pub: function (/* String */topic, /* Array? */args) {
+		console.log('pub\'d ' + topic + ': ' + args); // TODO: dev line, remove
 		if (metro.util.cache[topic]) {
 			var l = metro.util.cache[topic].length;
 
@@ -69,6 +109,27 @@ metro.util = {
 		}
 	}
 };
+
+metro.geo = {
+	distance: function (coord1, coord2) {
+		// default 4 sig figs reflects typical 0.3% accuracy of spherical model
+		// borrowed from http://www.movable-type.co.uk/scripts/latlong.html with some minor adjustments
+
+	  var R = 6371;
+	  var lat1 = coord1[0].toRad(), lon1 = coord1[1].toRad();
+	  var lat2 = coord2[0].toRad(), lon2 =coord2[1].toRad();
+	  var dLat = lat2 - lat1;
+	  var dLon = lon2 - lon1;
+
+	  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	          Math.cos(lat1) * Math.cos(lat2) * 
+	          Math.sin(dLon/2) * Math.sin(dLon/2);
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	  var d = R * c;
+	  return d;
+	}
+};
+
 
 /* Prototype methods */
 // Time formatting functions
