@@ -1,26 +1,40 @@
-var metro = {};
+var metro = {
+	data: {}
+};
 
 metro.init = function () {
-	// Get route
-	// Get station
-	// Localize data
+	metro.station.init();
+	metro.route.init();
 };
 
-metro.nextRide = {
-	// Determine next ride
-};
-
-metro.views = {
-	station: {
-		set: function () {},
-		onChange: function () {}
+metro.route = {
+	init: function() {
+		metro.data.route = {};
+		metro.route.get();
 	},
-	setTime: {
-		next: function () {},
-		futures: function () {}
+	get: function () {
+		var route = 'redline';
+		metro.route.set(route);
+	},
+	set: function (route) {
+		metro.data.route[route] = tempData[route];
+		metro.util.pub('route', [route]);
 	}
 };
 
+metro.station = {
+	init: function () {
+		metro.util.sub('route', metro.station.get);
+	},
+	get: function (aRoute) {
+		var station = 'Lakeline';
+		metro.station.set(station);
+	},
+	set: function (station) {
+		metro.data.station = station;
+		metro.util.pub('station', [station]);
+	}
+};
 
 /* Utils */
 metro.util = {
@@ -91,3 +105,5 @@ if (typeof Number.prototype.toDeg === 'undefined') {
 	  return this * 180 / Math.PI;
 	};
 }
+
+metro.init();
