@@ -17,7 +17,8 @@ metro.route = {
 		metro.route.set(route);
 	},
 	set: function (route) {
-		metro.data.route[route] = tempData[route];
+		metro.data.route = tempData[route];
+		metro.data.route.name = route;
 		metro.util.pub('route', [route]);
 	}
 };
@@ -30,7 +31,7 @@ metro.station = {
 	get: function (route) {
 		var data = metro.data,
 				user = data.user,
-				stations = data.route[route].stations,
+				stations = data.route.stations,
 				closest, distance;
 		if (navigator.geolocation) {
 			try {

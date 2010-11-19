@@ -1,13 +1,31 @@
 metro.view = {
 	init: function () {
-		// Sub to setStation
-		metro.util.sub('setStation', metro.view.station.set);
+		metro.util.sub('station', metro.view.station.set);
+		metro.util.sub('route', metro.view.station.list);
+		metro.util.sub('time', metro.view.time.next);
 		
-		// Sub to setTime
-		metro.util.sub('setTime', metro.view.time.next);
+		if (metro.data.route.stations) metro.view.station.list();
 	},
 	station: {
-		set: function () {}
+		set: function (station) {
+			var title = document.getElementById('station'),
+					select = document.getElementById('stations');
+			title.innerHTML = station;
+			
+			select.selected = station;
+		},
+		list: function () {
+			var select = document.getElementById('stations'),
+					routeStations = metro.data.route.stations,
+					options = '';
+			
+			for (var routeStation in routeStations) {
+				if (routeStations.hasOwnProperty(routeStation)) {
+					options += '<option>' + routeStation + '</option>';
+				}
+			}
+			select.innerHTML = options;
+		}
 	},
 	time: {
 		next: function () {},
