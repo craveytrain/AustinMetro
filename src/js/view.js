@@ -11,7 +11,7 @@ metro.view = {
 					select = document.getElementById('stations'),
 					l = select.options.length;
 
-			title.innerHTML = station;
+			title.innerHTML = metro.data.route.stations[station].name;
 			
 			for (var i = 0; i < l; i++) {
 				if (select.options[i].value === station) {
