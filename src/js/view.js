@@ -2,17 +2,23 @@ metro.view = {
 	init: function () {
 		metro.util.sub('station', metro.view.station.set);
 		metro.util.sub('route', metro.view.station.list);
-		metro.util.sub('time', metro.view.time.next);
 		
 		if (metro.data.route.stations) metro.view.station.list();
 	},
 	station: {
 		set: function (station) {
 			var title = document.getElementById('station'),
-					select = document.getElementById('stations');
+					select = document.getElementById('stations'),
+					l = select.options.length;
+
 			title.innerHTML = station;
 			
-			select.selected = station;
+			for (var i = 0; i < l; i++) {
+				if (select.options[i].value === station) {
+					select.options[i].selected = true;
+					break;
+				}
+			}
 		},
 		list: function () {
 			var select = document.getElementById('stations'),
@@ -31,10 +37,6 @@ metro.view = {
 		changeHandler: function () {
 			metro.util.pub('station', [this.value]);
 		}
-	},
-	time: {
-		next: function () {},
-		futures: function () {}
 	}
 };
 
