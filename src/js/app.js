@@ -43,7 +43,7 @@ metro.station = {
 						if (stations.hasOwnProperty(station)) {
 							console.log(user.station);
 							console.log(closest);
-							distance = +metro.geo.distance(user.pos, stations[station]);
+							distance = +metro.geo.distance(user.pos, stations[station].pos);
 							console.log(station);
 							console.log(distance);
 							console.log('--------------');
@@ -114,7 +114,7 @@ metro.time = {
 	},
 	compare: function (then) {
 		var now = new Date;
-				
+
 		return Math.floor((then - now) / 60000);
 	}
 };
