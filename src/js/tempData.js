@@ -24,15 +24,42 @@ tempData = {
 			Downtown: ['6:41', '7:17', '9:05', '15:45', '16:20', '16:55', '17:30', '18:05', '18:40']
 		},
 		stations: {
-			Leander: [30.586401, -97.855735],
-			Lakeline: [30.481965, -97.786517],
-			Howard: [30.397128, -97.776066],
-			Kramer: [30.392786, -97.7164],
-			Crestview:[30.338448, -97.719656],
-			Highland: [30.328601, -97.716203],
-			MLKJr: [30.279818, -97.709031],
-			PlazaSaltillo: [30.262242, -97.727578],
-			Downtown: [30.265012, -97.739296]
+			Leander: {
+				name: 'Leander',
+				loc: [30.586401, -97.855735]
+			},
+			Lakeline: {
+				name: 'Lakeline',
+				loc: [30.481965, -97.786517]
+			},
+			Howard: {
+				name: 'Howard',
+				loc: [30.397128, -97.776066]
+			},
+			Kramer: {
+				name: 'Kramer',
+				loc: [30.392786, -97.7164]
+			},
+			Crestview: {
+				name: 'Crestview',
+				loc: [30.338448, -97.719656]
+			},
+			Highland: {
+				name: 'Highland',
+				loc: [30.328601, -97.716203]
+			},
+			MLKJr: {
+				name: 'MLK, Jr.',
+				loc: [30.279818, -97.709031]
+			},
+			PlazaSaltillo: {
+				name: 'Plaza Saltillo',
+				loc: [30.262242, -97.727578]
+			},
+			Downtown: {
+				name: 'Downtown',
+				loc: [30.265012, -97.739296]
+			}
 		}
 	}
 };

@@ -21,10 +21,15 @@ metro.view = {
 			
 			for (var routeStation in routeStations) {
 				if (routeStations.hasOwnProperty(routeStation)) {
-					options += '<option>' + routeStation + '</option>';
+					options += '<option value="' + routeStation + '">' + routeStations[routeStation].name + '</option>';
 				}
 			}
 			select.innerHTML = options;
+			
+			select.addEventListener('change', metro.view.station.changeHandler, false);
+		},
+		changeHandler: function () {
+			metro.util.pub('station', [this.value]);
 		}
 	},
 	time: {
