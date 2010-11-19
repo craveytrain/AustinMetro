@@ -3,6 +3,7 @@ var metro = {
 };
 
 metro.init = function () {
+	metro.time.init();
 	metro.station.init();
 	metro.route.init();
 };
@@ -73,6 +74,48 @@ metro.station = {
 	set: function (station) {
 		metro.data.user.station = station;
 		// metro.util.pub('station', [station]);
+	}
+};
+
+metro.time = {
+	init: function () {
+		metro.util.sub('station', metro.time.get);
+	},
+	get: function (station) {
+		var dirs = metro.data.route.dirs,
+				times, date, aTime, ttl, l;
+		
+		for (var dir in dirs) {
+			times = dirs[dir][station];
+			l = times.length;
+			date = new Date();
+			
+			for (var i = 0; i < l; i++) {
+				aTime = times[i].split(':');
+				date.setHours(aTime[0]);
+				date.setMinutes(aTime[1]);
+				
+				ttl = metro.time.compare(date);
+				
+				if (ttl > 0) {
+					metro.util.pub('time', [dir, times[i], ttl]);
+					break;
+				}
+			}
+			if (ttl < 0) {
+				date = date.setDate(date.getDate() + 1);
+				aTime = times[0].split(':');
+				date.setHours(aTime[0]);
+				date.setMinutes(aTime[1]);
+				ttl = metro.time.compare(date);
+				metro.util.pub('time', [dir, times[0], ttl]);
+			}
+		}
+	},
+	compare: function (then) {
+		var now = new Date;
+				
+		return Math.floor((then - now) / 60000);
 	}
 };
 
