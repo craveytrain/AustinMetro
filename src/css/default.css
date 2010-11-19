@@ -32,7 +32,8 @@ h1 {
 	margin: 2em 0;
 }
 
-.route h2 {
+.route h1 {
+	color: #444;
 	font-size: 2em;
 }
 
