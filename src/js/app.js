@@ -103,7 +103,7 @@ metro.time = {
 				}
 			}
 			if (ttl < 0) {
-				date = date.setDate(date.getDate() + 1);
+				date.setDate(date.getDate() + 1);
 				aTime = times[0].split(':');
 				date.setHours(aTime[0]);
 				date.setMinutes(aTime[1]);
