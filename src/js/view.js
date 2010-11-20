@@ -41,19 +41,9 @@ metro.view = {
 		}
 	},
 	time: {
-		init: function (dir, time, ttl) {
-			time = metro.view.time.to12HourPeriod(time);
+		init: function (dir, date, ttl) {
 			ttl = metro.view.time.relative(ttl);
-			metro.view.time.build(dir, time, ttl);
-		},
-		to12HourPeriod: function (t) {
-			var aTime = t.split(':'),
-					period = (aTime[0] < 12) ? ' AM' : ' PM',
-					hours = (aTime[0] > 12) ? aTime[0] - 12 : aTime[0];
-
-			if (hours === '0') hours = '12';
-
-			return hours + ':' + aTime[1] + period;
+			metro.view.time.build(dir, date, ttl);
 		},
 		relative: function (d) {
 			if (d === 0) return 'any second now';
@@ -62,7 +52,7 @@ metro.view = {
 
 			return 'in about ' + Math.floor(d / 60) + ' hours';
 		},
-		build: function (dir, time, ttl) {
+		build: function (dir, date, ttl) {
 			var parent = document.getElementById('upcoming'),
 					// Create nodes
 					section = document.createElement('section'),
@@ -70,7 +60,7 @@ metro.view = {
 					headingTxt = document.createTextNode(dir),
 					nextCont = document.createElement('p'),
 					next = document.createElement('time'),
-					nextTxt = document.createTextNode(time),
+					nextTxt = document.createTextNode(date.to12HourPeriodString()),
 					relative = document.createElement('span'),
 					relativeTxt = document.createTextNode(ttl),
 					nav = document.createElement('nav'),

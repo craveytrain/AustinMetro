@@ -98,7 +98,7 @@ metro.time = {
 				ttl = metro.time.compare(date);
 				
 				if (ttl > 0) {
-					metro.util.pub('time', [dir, times[i], ttl]);
+					metro.util.pub('time', [dir, date, ttl]);
 					break;
 				}
 			}
@@ -108,7 +108,7 @@ metro.time = {
 				date.setHours(aTime[0]);
 				date.setMinutes(aTime[1]);
 				ttl = metro.time.compare(date);
-				metro.util.pub('time', [dir, times[0], ttl]);
+				metro.util.pub('time', [dir, date, ttl]);
 			}
 		}
 	},
