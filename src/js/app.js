@@ -56,8 +56,6 @@ metro.station = {
 							}
 						}
 					}
-					metro.util.pub('station', [user.station]);
-
 					// TODO: add watch for change
 				},
 				function(err){
@@ -73,7 +71,7 @@ metro.station = {
 	},
 	set: function (station) {
 		metro.data.user.station = station;
-		// metro.util.pub('station', [station]);
+		metro.util.pub('station', [station]);
 	}
 };
 
@@ -98,7 +96,7 @@ metro.time = {
 				ttl = metro.time.compare(date);
 				
 				if (ttl > 0) {
-					metro.util.pub('time', [dir, date, ttl]);
+					metro.util.pub('time', [dir, date, ttl, i]);
 					break;
 				}
 			}
@@ -108,7 +106,7 @@ metro.time = {
 				date.setHours(aTime[0]);
 				date.setMinutes(aTime[1]);
 				ttl = metro.time.compare(date);
-				metro.util.pub('time', [dir, date, ttl]);
+				metro.util.pub('time', [dir, date, ttl, 0]);
 			}
 		}
 	},

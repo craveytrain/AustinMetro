@@ -37,13 +37,14 @@ metro.view = {
 			select.addEventListener('change', metro.view.station.changeHandler, false);
 		},
 		changeHandler: function () {
-			metro.util.pub('station', [this.value]);
+			metro.station.set(this.value);
 		}
 	},
 	time: {
-		init: function (dir, date, ttl) {
+		init: function (dir, date, ttl, idx) {
 			ttl = metro.view.time.relative(ttl);
-			metro.view.time.build(dir, date, ttl);
+			var futures = metro.data.route.dirs[dir][metro.data.user.station].slice(idx, idx + 4);
+			metro.view.time.build(dir, date, ttl, futures);
 		},
 		relative: function (d) {
 			if (d === 0) return 'any second now';
@@ -52,7 +53,7 @@ metro.view = {
 
 			return 'in about ' + Math.floor(d / 60) + ' hours';
 		},
-		build: function (dir, date, ttl) {
+		build: function (dir, date, ttl, futures) {
 			var parent = document.getElementById('upcoming'),
 					// Create nodes
 					section = document.createElement('section'),
@@ -65,7 +66,18 @@ metro.view = {
 					relativeTxt = document.createTextNode(ttl),
 					nav = document.createElement('nav'),
 					list = document.createElement('ol'),
-					listItem = document.createElement('li');
+					listItem = document.createElement('li'),
+					l = futures.length,
+					future, futureListItem;
+					
+					
+			for (var i = 0; i < l; i++) {
+				futureListItem = listItem.cloneNode(false);
+				if (i === 0) futureListItem.className = 'selected';
+				future = document.createTextNode(futures[i]);
+				futureListItem.appendChild(future);
+				list.appendChild(futureListItem);
+			}
 					
 			// Set attributes & values
 			section.className = 'route';
@@ -82,11 +94,16 @@ metro.view = {
 			relative.appendChild(relativeTxt);
 			section.appendChild(nav);
 			nav.appendChild(list);
-			list.appendChild(listItem);
 			
 			// Drop it in the DOM
 			parent.appendChild(section);
-					
+		},
+		futures: function (dir, idx) {
+			var station = metro.data.user.station,
+					times = metro.data.route.dirs[dir][station],
+					l = times.length,
+					futures = times.slice(idx, idx + 4);
+								
 		}
 	}
 };
