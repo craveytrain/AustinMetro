@@ -3,6 +3,7 @@ var metro = {
 };
 
 metro.init = function () {
+	metro.updater.init();
 	metro.time.init();
 	metro.station.init();
 	metro.route.init();
@@ -91,7 +92,7 @@ metro.time = {
 				ttl = metro.time.compare(date);
 				
 				if (ttl > 0) {
-					metro.util.pub('time', [dir, date, ttl, i]);
+					metro.time.set(dir, date, ttl, i);
 					break;
 				}
 			}
@@ -101,7 +102,7 @@ metro.time = {
 				date.setHours(aTime[0]);
 				date.setMinutes(aTime[1]);
 				ttl = metro.time.compare(date);
-				metro.util.pub('time', [dir, date, ttl, 0]);
+				metro.time.set(dir, date, ttl, 0);
 			}
 		}
 	},
@@ -109,6 +110,21 @@ metro.time = {
 		var now = new Date;
 
 		return Math.floor((then - now) / 60000);
+	},
+	set: function (dir, date, ttl, i) {
+		metro.util.pub('time', [dir, date, ttl, i]);
+	}
+};
+
+metro.updater = {
+	init: function () {
+		metro.util.sub('station', metro.updater.station);
+		metro.data.updater = {};
+	},
+	station: function () {
+		metro.data.updater.station = window.setTimeout(function () {
+			metro.util.pub('station', [metro.data.user.station]);
+		}, 60000);
 	}
 };
 
