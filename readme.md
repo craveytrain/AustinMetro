@@ -2,6 +2,10 @@
 This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached a feature critical mass and has been stablized.
 
 ##Changelog:
+###v0.1.1 Nov 20th, 2010
+* Reorganized app to use separate view and app layer js files
+* Using pub/sub to handling messaging
+
 ###v0.1: Oct 29th, 2010
 * Add onchange listener for drop down
 * Added route namespace (hardcoded to 'redline' for now)
@@ -11,9 +15,7 @@ This is a project to help users find out the next route available for Austin Met
 
 ##Roadmap:
 ###v0.2
-* Last used station
-* Turn off sync option
-
+* Turn off auto-update
 
 ###v0.3
 * Offline cache manifest

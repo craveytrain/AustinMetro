@@ -41,12 +41,7 @@ metro.station = {
 
 					for (var station in stations) {
 						if (stations.hasOwnProperty(station)) {
-							console.log(user.station);
-							console.log(closest);
 							distance = +metro.geo.distance(user.pos, stations[station].pos);
-							console.log(station);
-							console.log(distance);
-							console.log('--------------');
 							if (typeof user.station === 'undefined') {
 								closest = distance;
 								metro.station.set(station);
@@ -121,7 +116,6 @@ metro.time = {
 metro.util = {
 	cache: {},
 	pub: function (/* String */topic, /* Array? */args) {
-		console.log('pub\'d ' + topic + ': ' + args); // TODO: dev line, remove
 		if (metro.util.cache[topic]) {
 			var l = metro.util.cache[topic].length;
 
