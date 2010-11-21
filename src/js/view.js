@@ -68,8 +68,10 @@ metro.view = {
 					list = document.createElement('ol'),
 					listItem = document.createElement('li'),
 					l = futures.length,
-					future, futureListItem;
-					
+					future, futureListItem,
+					old = document.getElementById(dir);
+										
+			if (old) parent.removeChild(old);
 					
 			for (var i = 0; i < l; i++) {
 				futureListItem = listItem.cloneNode(false);
