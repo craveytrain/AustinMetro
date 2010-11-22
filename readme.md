@@ -2,7 +2,7 @@
 This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached a feature critical mass and has been stablized.
 
 ##Changelog:
-###v0.1.1 Nov 21th, 2010
+###v0.1.1 Nov 22nd, 2010
 * Reorganized app to use separate view and app layer js files
 * Using pub/sub to handling messaging
 
