@@ -8,7 +8,7 @@ metro.view = {
 		metro.util.pub('route', [metro.data.route.name]);
 	},
 	station: {
-		set: function (station) {
+		set: function (/* String */ station) {
 			var title = document.getElementById('station'),
 					select = document.getElementById('stations'),
 					l = select.options.length;
@@ -41,19 +41,19 @@ metro.view = {
 		}
 	},
 	time: {
-		init: function (dir, date, ttl, idx) {
+		init: function (/* String */ dir, /* Date */ date, /* Int */ ttl, /* Int */ idx) {
 			ttl = metro.view.time.relative(ttl);
 			var futures = metro.data.route.dirs[dir][metro.data.user.station].slice(idx, idx + 4);
 			metro.view.time.build(dir, date, ttl, futures);
 		},
-		relative: function (d) {
+		relative: function (/* Int */ d) {
 			if (d === 0) return 'any second now';
 			if (d === 1) return 'in 1 minute';
 			if (d < 120) return 'in ' + d + ' minutes';
 
 			return 'in about ' + Math.floor(d / 60) + ' hours';
 		},
-		build: function (dir, date, ttl, futures) {
+		build: function (/* String */ dir, /* Date */ date, /* Int */ ttl, /* Array */ futures) {
 			var parent = document.getElementById('upcoming'),
 					// Create nodes
 					section = document.createElement('section'),
@@ -75,8 +75,7 @@ metro.view = {
 					
 			for (var i = 0; i < l; i++) {
 				futureListItem = listItem.cloneNode(false);
-				if (i === 0) futureListItem.className = 'selected';
-				future = document.createTextNode(futures[i]);
+				future = document.createTextNode(metro.view.time.to12Hour(futures[i]));
 				futureListItem.appendChild(future);
 				list.appendChild(futureListItem);
 			}
@@ -100,12 +99,17 @@ metro.view = {
 			// Drop it in the DOM
 			parent.appendChild(section);
 		},
-		futures: function (dir, idx) {
+		futures: function (/* String*/ dir, /* Int */ idx) {
 			var station = metro.data.user.station,
 					times = metro.data.route.dirs[dir][station],
 					l = times.length,
 					futures = times.slice(idx, idx + 4);
 								
+		},
+		to12Hour: function (/* String */ time) {
+			var aTime = time.split(':'),
+					hours = (aTime[0] > 12) ? aTime[0] - 12 : aTime[0];
+			return hours + ':' + aTime[1];
 		}
 	}
 };

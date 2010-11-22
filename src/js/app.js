@@ -18,7 +18,7 @@ metro.route = {
 		var route = 'redline';
 		metro.route.set(route);
 	},
-	set: function (route) {
+	set: function (/* String */ route) {
 		metro.data.route = tempData[route];
 		metro.data.route.name = route;
 		metro.util.pub('route', [route]);
@@ -30,7 +30,7 @@ metro.station = {
 		metro.util.sub('route', metro.station.get);
 		metro.data.user = {};
 	},
-	get: function (route) {
+	get: function (/* String */ route) {
 		var data = metro.data,
 				user = data.user,
 				stations = data.route.stations,
@@ -65,7 +65,7 @@ metro.station = {
 		}
 		
 	},
-	set: function (station) {
+	set: function (/* String */ station) {
 		metro.data.user.station = station;
 		metro.util.pub('station', [station]);
 	}
@@ -75,7 +75,7 @@ metro.time = {
 	init: function () {
 		metro.util.sub('station', metro.time.get);
 	},
-	get: function (station) {
+	get: function (/* String */ station) {
 		var dirs = metro.data.route.dirs,
 				times, date, aTime, ttl, l;
 		
@@ -92,7 +92,7 @@ metro.time = {
 				ttl = metro.time.compare(date);
 				
 				if (ttl > 0) {
-					metro.time.set(dir, date, ttl, i);
+					metro.time.set(dir, date, ttl, i + 1);
 					break;
 				}
 			}
@@ -102,11 +102,11 @@ metro.time = {
 				date.setHours(aTime[0]);
 				date.setMinutes(aTime[1]);
 				ttl = metro.time.compare(date);
-				metro.time.set(dir, date, ttl, 0);
+				metro.time.set(dir, date, ttl, 1);
 			}
 		}
 	},
-	compare: function (then) {
+	compare: function (/* Date */ then) {
 		var now = new Date;
 
 		return Math.floor((then - now) / 60000);
@@ -131,7 +131,7 @@ metro.updater = {
 /* Utils */
 metro.util = {
 	cache: {},
-	pub: function (/* String */topic, /* Array? */args) {
+	pub: function (/* String */ topic, /* Array? */ args) {
 		if (metro.util.cache[topic]) {
 			var l = metro.util.cache[topic].length;
 
@@ -140,7 +140,7 @@ metro.util = {
 			}
 		}
 	},
-	sub: function (/* String */topic, /* Function */callback) {
+	sub: function (/* String */ topic, /* Function */ callback) {
 		if (!metro.util.cache[topic]) {
 			metro.util.cache[topic] = [];
 		}
@@ -148,7 +148,7 @@ metro.util = {
 		metro.util.cache[topic].push(callback);
 		return [topic, callback]; // Array
 	},
-	unsub: function (/* Array */handle) {
+	unsub: function (/* Array */ handle) {
 		var t = handle[0];
 		if (metro.util.cache[t]) {
 			var l = metro.util.cache[t].length;
@@ -163,7 +163,7 @@ metro.util = {
 };
 
 metro.geo = {
-	distance: function (coord1, coord2) {
+	distance: function (/* Array */ coord1, /* Array */ coord2) {
 		// default 4 sig figs reflects typical 0.3% accuracy of spherical model
 		// borrowed from http://www.movable-type.co.uk/scripts/latlong.html with some minor adjustments
 
@@ -178,7 +178,7 @@ metro.geo = {
 	          Math.sin(dLon/2) * Math.sin(dLon/2);
 	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	  var d = R * c;
-	  return d;
+	  return d; // Int
 	}
 };
 
@@ -194,28 +194,28 @@ Date.prototype.to12HourString = function () {
 	hours = (hours === 0) ? hours + 12 : hours;
 	mins = (mins < 10) ? '0' + mins : mins;
 	
-	return hours + ':' + mins;
+	return hours + ':' + mins; // String
 };
 
 // Add period to 12 hour format
 Date.prototype.to12HourPeriodString = function () {
 	var period = (this.getHours() < 12) ? ' AM' : ' PM';
 	
-	return this.to12HourString() + period;
+	return this.to12HourString() + period; // String
 };
 
 // Extend Math methods (borrowed from http://www.movable-type.co.uk/scripts/latlong.html)
 // Convert numeric degrees to radians
 if (typeof Number.prototype.toRad === 'undefined') {
 	Number.prototype.toRad = function() {
-	  return this * Math.PI / 180;
+	  return this * Math.PI / 180; // Int
 	};
 }
 
 // Convert radians to numeric (signed) degrees
 if (typeof Number.prototype.toDeg === 'undefined') {
 	Number.prototype.toDeg = function() {
-	  return this * 180 / Math.PI;
+	  return this * 180 / Math.PI; // Int
 	};
 }
 
