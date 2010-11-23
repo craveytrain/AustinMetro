@@ -182,7 +182,6 @@ metro.geo = {
 	}
 };
 
-
 /* Prototype methods */
 // Time formatting functions
 // Spit out simple 12 hour format

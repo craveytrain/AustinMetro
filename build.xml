@@ -4,7 +4,6 @@
 	<defaultexcludes add="**/.git/**"/>
 	<property name="src.dir" value="src"/>
 	<property name="build.dir" value="build"/>
-	<property name="lib.dir" value="/Users/mcravey/Projects/libs"/>
 
 	<target name="clean">
 		<!-- Delete build directory -->
@@ -22,33 +21,6 @@
 			<fileset dir="${src.dir}" />
 		</copy>
 	</target>
-
-	<target name="minify" depends="build">
-		<echo>Cleaning out js directory</echo>
-		<delete includeemptydirs="true">
-			<fileset dir="${build.dir}/js" includes="**/*"/>
-		</delete>
-		<compress src.file="${src.dir}/js/global.js" dest.file="${build.dir}/js/global.js" minifier="closure_compiler" />
-		<echo>Cleaning out css directory</echo>
-		<delete includeemptydirs="true">
-			<fileset dir="${build.dir}/css" includes="**/*"/>
-		</delete>
-		<compress src.file="${src.dir}/css/master.css" dest.file="${build.dir}/css/master.css" minifier="yui_compressor" />
-	</target>
-
-	<macrodef name="compress">
-		<attribute name="src.file" />
-		<attribute name="dest.file" />
-		<attribute name="minifier" />
-		<sequential>
-			<echo>Minifying @{src.file} to @{dest.file}</echo>
-			<apply executable="juicer" parallel="false">
-				<arg line="merge -sf -m @{minifier}"/>
-				<arg line="-o @{dest.file}"/>
-				<filelist files="@{src.file}" />
-			</apply>
-		</sequential>
-	</macrodef>
 			
 	<macrodef name="deploy">
 		<attribute name="dest.dir" />
@@ -75,8 +47,4 @@
 	<target name="dev" depends="build">
 		<deploy dest.dir="/Volumes/metro" />
 	</target>
-	
-	<target name="min" depends="minify">
-		<deploy dest.dir="/Volumes/metro" />
-	</target>	
 </project>
