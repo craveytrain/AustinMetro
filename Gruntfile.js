@@ -1,4 +1,3 @@
-/*jshint quotmark:false */
 module.exports = function(grunt) {
 'use strict';
 
@@ -8,14 +7,13 @@ grunt.initConfig({
     copy: {
         dist: {
             files: {
-                'build/': ['source/**', '!source/stylesheets/**']
+                'build/': 'source/**'
             }
         }
     },
     render: {
-        content: ['content/**/*.md'],
         target: 'build',
-        templates: 'templates',
+        templates: 'templates'
     },
     jade: {
         options: {
@@ -41,26 +39,7 @@ grunt.initConfig({
         }
 
     },
-    uglify: {
-        dist: {
-            options: {
-                sourceMap: 'build/scripts/main.min.js.map',
-                sourceMappingURL: 'main.min.js.map',
-                prefix: '2'
-            },
-            files: {
-                'build/scripts/main.min.js': 'build/scripts/main.js'
-            }
-        }
-    },
     watch: {
-        scripts: {
-            files: 'source/scripts/**/*.js',
-            tasks: ['uglify'],
-            options: {
-                interrupt: true
-            }
-        },
         stylesheets: {
             files: 'source/stylesheets/**/*.scss',
             tasks: ['compass:dev'],
@@ -69,7 +48,7 @@ grunt.initConfig({
             }
         },
         templates: {
-            files: ['**/*.yml', 'templates/**/*.jade', 'content/**/*.md'],
+            files: ['**/*.json', 'templates/**/*.jade'],
             tasks: ['render'],
             options: {
                 interrupt: true
@@ -88,7 +67,7 @@ grunt.initConfig({
             jshintrc: '.jshintrc'
         },
         grunt: ['Gruntfile.js', 'lib/**/*.js'],
-        site: ['source/**/*.js']
+        site: ['source/**/*.js', '!**/lib/**/*.js']
 
     },
     connect: {
@@ -107,14 +86,15 @@ grunt.loadNpmTasks('grunt-contrib-clean');
 grunt.loadNpmTasks('grunt-contrib-connect');
 grunt.loadNpmTasks('grunt-contrib-compass');
 grunt.loadNpmTasks('grunt-contrib-copy');
-grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-jshint');
 grunt.loadTasks('lib');
 
+
+grunt.registerTask('render', ['buildData', 'jade']);
 grunt.registerTask('build', ['clean', 'jshint', 'copy', 'render', 'compass:dev']);
 grunt.registerTask('preview', ['build', 'connect', 'watch']);
-grunt.registerTask('package', ['clean', 'jshint', 'copy', 'render', 'compass:dist', 'uglify']);
+grunt.registerTask('package', ['clean', 'jshint', 'copy', 'render', 'compass:dist']);
 
 // Default task(s).
 grunt.registerTask('default', ['build']);
