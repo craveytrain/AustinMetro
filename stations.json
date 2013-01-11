@@ -1,5 +1,5 @@
 {
-    "Leander": {
+    "leander": {
         "name": "Leander",
         "pos": [
             30.586401,
@@ -26,7 +26,7 @@
             }
         }
     },
-    "Lakeline": {
+    "lakeline": {
         "name": "Lakeline",
         "pos": [
             30.481965,
@@ -53,7 +53,7 @@
             }
         }
     },
-    "Howard": {
+    "howard": {
         "name": "Howard",
         "pos": [
             30.397128,
@@ -84,7 +84,7 @@
             }
         }
     },
-    "Kramer": {
+    "kramer": {
         "name": "Kramer",
         "pos": [
             30.392786,
@@ -115,7 +115,7 @@
             }
         }
     },
-    "Crestview": {
+    "crestview": {
         "name": "Crestview",
         "pos": [
             30.338448,
@@ -149,7 +149,7 @@
             }
         }
     },
-    "Highland": {
+    "highland": {
         "name": "Highland",
         "pos": [
             30.328601,
@@ -183,7 +183,7 @@
             }
         }
     },
-    "MLKJr": {
+    "mlkjr": {
         "name": "MLK, Jr.",
         "pos": [
             30.279818,
@@ -217,7 +217,7 @@
             }
         }
     },
-    "PlazaSaltillo": {
+    "plazasaltillo": {
         "name": "Plaza Saltillo",
         "pos": [
             30.262242,
@@ -251,7 +251,7 @@
             }
         }
     },
-    "Downtown": {
+    "downtown": {
         "name": "Downtown",
         "pos": [
             30.265012,
