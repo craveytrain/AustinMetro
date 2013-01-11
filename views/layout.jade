@@ -1,11 +1,11 @@
-!!! 5
+doctype 5
 html.no-js(lang='en', dir='ltr')
 	head
 		include includes/head
-
-	body(id=id, class='station')
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
 		block header
 		section.main(role='main')
 			block content
-				!= body
 		include includes/footer

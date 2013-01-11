@@ -24,6 +24,7 @@
     "shadow"        : true,
     "supernew"      : false,
     "undef"         : true,
+    "laxcomma"      : true,
 
 
 
