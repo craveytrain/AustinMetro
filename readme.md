@@ -1,33 +1,22 @@
-#Austin Metro
-This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached a feature critical mass and has been stablized.
+# Austin Metro
+This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached feature critical mass and has been stablized.
 
-##Changelog:
-###v0.1.1 Nov 22nd, 2010
-* Reorganized app to use separate view and app layer js files
-* Using pub/sub to handling messaging
+## Behavior
+- site detects nearest station
+- gives upcoming times
 
-###v0.1: Oct 29th, 2010
-* Add onchange listener for drop down
-* Added route namespace (hardcoded to 'redline' for now)
-			
-###v0.09: Oct 25th, 2010
-* Station drop down updating based on nearest station
+## Tech Notes
+### AppCache
+- offline pages, js, everything
 
-##Roadmap:
-###v0.2
-* Turn off auto-update
+### GeoLocation
+- if location fails, give selection method for station
 
-###v0.3
-* Offline cache manifest
+### History API
+- each station needs a real page
+- get for station should respond with HTML or JSON depending on request
 
-###v0.4
-* SVG/Canvas drawing of route map
-
-###v0.5
-* Route scrape server
-
-###v0.6
-* Route table sync
-
-##Eventual
-* Get other routes
+### Localstorage
+- store route data accessed
+- do we cache the whole route? station? direction?
+- Versioning: date? number? hash?

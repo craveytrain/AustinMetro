@@ -27,5 +27,9 @@ exports.list = function(req, res) {
  exports.item = function(req, res) {
 	var station = stations[req.params.station.toLowerCase()];
 	station.title = station.name;
-	res.render('station', station);
+	if (req.xhr) {
+		res.json(200, station);
+	} else {
+		res.render('station', station);
+	}
 };
