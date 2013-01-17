@@ -3,7 +3,7 @@ define(['lib/dot', 'lib/text!templates/route.tmpl'], function(dot, routeTmpl) {
 	dot.templateSettings.varname = 'station';
 	dot.templateSettings.strip = false;
 
-	var relativeTime = function(time) {
+	var relativeTime = function() {
 		var currentTime = new Date().getTime();
 		var pickupTime = new Date();
 		var isNext = true;

@@ -1,4 +1,4 @@
-define(['promise'], function(promise) {
+define(['lib/promise'], function(promise) {
 	'use strict';
 
 	var path = location.pathname;
