@@ -9,8 +9,8 @@ define([
 ) {
 	'use strict';
 
-	var isStation = function() {
-		return (/\/stations\/\w+/).test(location.pathname);
+	var isStation = function(path) {
+		return (/\/stations\/\w+/).test(path);
 	};
 
 	var relativeTime = function() {
@@ -47,12 +47,13 @@ define([
 	};
 
 	var init = function() {
-		if (isStation()) {
-			cache().then(function(error, result) {
-				if (error) return;
-				build(result);
-			});
-		}
+		var path = location.pathname;
+		if (!isStation(path)) return;
+
+		cache(path).then(function(error, result) {
+			if (error) return;
+			build(result);
+		});
 	};
 
 	return {

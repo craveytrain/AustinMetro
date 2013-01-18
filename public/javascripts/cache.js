@@ -1,13 +1,12 @@
 define(['lib/promise'], function(promise) {
 	'use strict';
 
-	return function() {
-		var path = location.pathname;
+	return function(url) {
 
 		var clearCache = function() {
 			var version = AM.version;
 			while (version--) {
-				var key = path + '-' + version;
+				var key = url + '-' + version;
 				if (localStorage.getItem(key)) localStorage.removeItem(key);
 			}
 		};
@@ -16,7 +15,7 @@ define(['lib/promise'], function(promise) {
 		var p = new promise.Promise();
 
 		// version it
-		var key = path + '-' + AM.version;
+		var key = url + '-' + AM.version;
 
 		// check for cache, if there, resolve promise
 		var data = localStorage.getItem(key);
@@ -24,7 +23,7 @@ define(['lib/promise'], function(promise) {
 
 		// otherwise do the xhr, store it, resolve promise
 		promise
-			.get(location.href, null, {'X-Requested-With': 'XMLHttpRequest'})
+			.get(url, null, {'X-Requested-With': 'XMLHttpRequest'})
 			.then(function(error, result) {
 				localStorage.setItem(key, result);
 				p.done(null, JSON.parse(result));
@@ -37,5 +36,5 @@ define(['lib/promise'], function(promise) {
 
 		// retun promise
 		return p;
-	}
+	};
 });

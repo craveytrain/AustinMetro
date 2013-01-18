@@ -4,6 +4,8 @@ This is a project to help users find out the next route available for Austin Met
 ## Behavior
 - site detects nearest station
 - gives upcoming times
+- each station needs a real page
+- get for station should respond with HTML or JSON depending on request
 
 ## Tech Notes
 ### AppCache
@@ -11,10 +13,6 @@ This is a project to help users find out the next route available for Austin Met
 
 ### GeoLocation
 - if location fails, give selection method for station
-
-### History API
-- each station needs a real page
-- get for station should respond with HTML or JSON depending on request
 
 ### Localstorage
 - store route data accessed
