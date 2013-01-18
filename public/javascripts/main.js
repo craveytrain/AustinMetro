@@ -1,8 +1,5 @@
-define(['cache', 'station'], function(cache, station) {
+define(['station'], function(station) {
 	'use strict';
 
-	cache.then(function(error, result) {
-		if (error) return;
-		station.build(result);
-	});
+	station.init();
 });

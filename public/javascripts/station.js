@@ -1,7 +1,17 @@
-define(['lib/dot', 'lib/text!templates/route.tmpl'], function(dot, routeTmpl) {
+define([
+	'cache',
+	'lib/dot',
+	'lib/text!templates/route.tmpl'
+], function(
+	cache,
+	dot,
+	routeTmpl
+) {
 	'use strict';
-	dot.templateSettings.varname = 'station';
-	dot.templateSettings.strip = false;
+
+	var isStation = function() {
+		return (/\/stations\/\w+/).test(location.pathname);
+	};
 
 	var relativeTime = function() {
 		var currentTime = new Date().getTime();
@@ -28,12 +38,24 @@ define(['lib/dot', 'lib/text!templates/route.tmpl'], function(dot, routeTmpl) {
 	var build = function(station) {
 		var stationContainer = document.getElementById('routes');
 
+		dot.templateSettings.varname = 'station';
+		dot.templateSettings.strip = false;
+
 		station.relativeTime = relativeTime();
 		var routeTmplCompiled = dot.template(routeTmpl);
 		stationContainer.insertAdjacentHTML('afterbegin', routeTmplCompiled(station));
 	};
 
+	var init = function() {
+		if (isStation()) {
+			cache().then(function(error, result) {
+				if (error) return;
+				build(result);
+			});
+		}
+	};
+
 	return {
-		build: build
+		init: init
 	};
 });
