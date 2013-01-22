@@ -3,4 +3,5 @@ footer.page-footer(role='contentinfo')
 block scripts
 	script(data-main='/javascripts/main.js', src='/javascripts/lib/require.js')
 	// TODO: analytics
-	script var AM = {version: 1};
+	script
+		var AM = !{JSON.stringify(version)};

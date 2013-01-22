@@ -16,6 +16,7 @@ grunt.initConfig({
 });
 
 grunt.loadNpmTasks('grunt-contrib-jshint');
+grunt.loadTasks('lib');
 
 grunt.registerTask('build', ['jshint']);
 

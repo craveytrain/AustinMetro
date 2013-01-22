@@ -1,19 +1,11 @@
-define([
-	'cache',
-	'lib/dot',
-	'lib/text!templates/route.tmpl'
-], function(
-	cache,
-	dot,
-	routeTmpl
-) {
+define(function() {
 	'use strict';
 
 	var isStation = function(path) {
 		return (/\/stations\/\w+/).test(path);
 	};
 
-	var relativeTime = function() {
+	var relativeTime = (function() {
 		var currentTime = new Date().getTime();
 		var pickupTime = new Date();
 		var isNext = true;
@@ -33,27 +25,21 @@ define([
 				return 'future';
 			}
 		};
-	};
+	}());
 
-	var build = function(station) {
-		var stationContainer = document.getElementById('routes');
+	var build = function() {
+		var times = document.querySelectorAll('.times li');
 
-		dot.templateSettings.varname = 'station';
-		dot.templateSettings.strip = false;
-
-		station.relativeTime = relativeTime();
-		var routeTmplCompiled = dot.template(routeTmpl);
-		stationContainer.insertAdjacentHTML('afterbegin', routeTmplCompiled(station));
+		Array.prototype.forEach.call(times, function(time) {
+			time.classList.add(relativeTime(time.textContent));
+		});
 	};
 
 	var init = function() {
 		var path = location.pathname;
 		if (!isStation(path)) return;
 
-		cache(path).then(function(error, result) {
-			if (error) return;
-			build(result);
-		});
+		build();
 	};
 
 	return {

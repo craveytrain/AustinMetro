@@ -8,7 +8,7 @@
  var fs = require('fs');
  var file = './stations.json';
 
- var stations;
+ var stations, version;
 
  fs.readFile(file, 'utf8', function (err, data) {
 	if (err) {
@@ -17,6 +17,16 @@
 	}
 
 	stations = JSON.parse(data);
+ });
+
+ fs.readFile('./version.json', 'utf8', function(err, data) {
+	if (err) {
+		console.log('Error: ' + err);
+		return;
+	}
+
+	version = JSON.parse(data);
+
  });
 
  var getLocations = function() {
@@ -35,21 +45,25 @@
  };
 
 
-exports.list = function(req, res) {
+exports.index = function(req, res) {
 	if (req.xhr) {
 		res.json(200, getLocations());
 	} else {
-		res.render('stations', { title: 'Station List', stations: stations });
+		res.render('stations', { title: 'Station List', stations: stations, version: version });
 	}
 };
 
  exports.item = function(req, res) {
 	var station = stations[req.params.station.toLowerCase()];
-	station.title = station.name;
+	var model = {
+		station: station,
+		title: station.name,
+		version: version
+	};
 
 	if (req.xhr) {
-		res.json(200, station);
+		res.json(200, model);
 	} else {
-		res.render('station', station);
+		res.render('station', model);
 	}
 };

@@ -7,6 +7,6 @@ define([
 ) {
 	'use strict';
 
-	stations.init();
+	// stations.init();
 	station.init();
 });
