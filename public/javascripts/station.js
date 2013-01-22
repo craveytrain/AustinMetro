@@ -16,6 +16,7 @@ define(function() {
 			pickupTime.setMinutes(parsedTime[1]);
 
 			if (pickupTime.getTime() < currentTime) {
+				isNext = true;
 				return 'past';
 			} else {
 				if (isNext) {
