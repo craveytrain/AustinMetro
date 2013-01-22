@@ -19,13 +19,13 @@
 	stations = JSON.parse(data);
  });
 
- fs.readFile('./version.json', 'utf8', function(err, data) {
+ fs.readFile('./package.json', 'utf8', function(err, data) {
 	if (err) {
 		console.log('Error: ' + err);
 		return;
 	}
 
-	version = JSON.parse(data);
+	version = JSON.parse(data).version;
 
  });
 
