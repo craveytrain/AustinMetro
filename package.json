@@ -5,20 +5,21 @@
   "license": "BSD",
   "private": "true",
   "devDependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-jshint": "~0.1.1"
-  },
-  "dependencies": {
-    "express": "3.0.6",
-    "jade": "*",
-    "less-middleware": "*"
+    "grunt": "~0.4.0rc4",
+    "grunt-contrib-jshint": "~0.1.0",
+    "grunt-contrib-jade": "~0.3.1",
+    "grunt-contrib-connect": "~0.1.0",
+    "grunt-contrib-watch": "~0.1.4",
+    "grunt-contrib-clean": "~0.4.0a",
+    "grunt-contrib-compass": "~0.1.0",
+    "grunt-contrib-copy": "~0.3.2"
   },
   "readmeFilename": "readme.md",
   "gitHead": "9f8e1af1aaf9aa882736dd57a8b09a505b68ce4e",
   "description": "This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached a feature critical mass and has been stablized.",
   "main": "Gruntfile.js",
   "scripts": {
-    "start": "node app"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",

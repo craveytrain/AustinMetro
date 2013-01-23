@@ -1,2 +1,3 @@
 node_modules
-*.appcache
+build
+.sass-cache

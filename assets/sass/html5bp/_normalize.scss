@@ -29,11 +29,11 @@ audio:not([controls]) { display: none; }
  * 2. Prevent iOS text size adjust on device orientation change, without disabling user zoom: h5bp.com/g
  */
 
-html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: @serif; color: @text-color; background-color: @bg-color; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: $serif; color: $text-color; background-color: $bg-color; }
 
-button, input, select, textarea { font-family: @sans; color: @text-color; }
+button, input, select, textarea { font-family: $sans; color: $text-color; }
 
-body { margin: 0; font-size: @font-size; line-height: @line-height; }
+body { margin: 0; font-size: $font-size; line-height: $line-height; }
 
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
@@ -41,15 +41,15 @@ body { margin: 0; font-size: @font-size; line-height: @line-height; }
  * Also: hot pink! (or customize the background color to match your design)
  */
 
-.selection(@selection-bg, @selection-color);
+@include selection($selection-bg, $selection-color);
 
 /* =============================================================================
    Links
    ========================================================================== */
 
-a { color: @link-color; }
-a:visited { color: @link-visited-color; }
-a:hover { color: @link-hover-color; }
+a { color: $link-color; }
+a:visited { color: $link-visited-color; }
+a:hover { color: $link-hover-color; }
 a:focus { outline: thin dotted; }
 
 /* Improve readability when focused and hovered in all browsers: h5bp.com/h */
@@ -75,7 +75,7 @@ ins { background: #ff9; color: #000; text-decoration: none; }
 mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
 
 /* Redeclare monospace font family: h5bp.com/j */
-pre, code, kbd, samp { font-family: @mono; _font-family: @mono; font-size: 1em; }
+pre, code, kbd, samp { font-family: $mono; _font-family: $mono; font-size: 1em; }
 
 /* Improve readability of pre-formatted text in all browsers */
 pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
@@ -91,14 +91,14 @@ sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 
 p {
-   margin: (@line-height + 0em) 0;
+   margin: #{$line-height}em 0;
 }
 
 /* =============================================================================
    Lists
    ========================================================================== */
 
-ul, ol { margin: (@line-height + 0em) 0; padding: 0 0 0 40px; }
+ul, ol { margin: #{$line-height}em 0; padding: 0 0 0 40px; }
 dd { margin: 0 0 0 40px; }
 nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
 

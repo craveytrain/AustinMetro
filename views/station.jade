@@ -1,8 +1,8 @@
 extends layout
 
 block content
-	h1= title
-	each route in station.routes
+	h1= name
+	each route in routes
 		div.route
 			h2= route.name
 			each dir in route.directions
