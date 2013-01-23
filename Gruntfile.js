@@ -44,6 +44,15 @@ grunt.initConfig({
             cssDir: 'build/css'
         }
     },
+    requirejs: {
+        compile: {
+            options: {
+                baseUrl: 'assets/js',
+                name: 'main',
+                dir: 'build/js'
+            }
+        }
+    },
     connect: {
         server: {
             options: {
@@ -74,13 +83,14 @@ grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-clean');
 grunt.loadNpmTasks('grunt-contrib-copy');
 grunt.loadNpmTasks('grunt-contrib-compass');
+grunt.loadNpmTasks('grunt-contrib-requirejs');
 grunt.loadTasks('lib');
 
 grunt.registerTask('build', ['jshint', 'clean', 'render']);
 
 grunt.registerTask('preview', ['build', 'copy:dev', 'compass:dev', 'connect', 'watch']);
 
-grunt.registerTask('package', ['build', 'compass:prod', 'manifest']);
+grunt.registerTask('package', ['build', 'compass:prod', 'requirejs', 'manifest']);
 
 // Default task(s).
 grunt.registerTask('default', ['preview']);

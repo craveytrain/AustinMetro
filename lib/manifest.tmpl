@@ -2,4 +2,6 @@ CACHE MANIFEST
 # version <%= version %>
 
 <% _.forEach(stations, function(station) { %>
-/stations/<%= station.slug %><% }); %>
+/stations/<%= station.id %>/<% }); %>
+<% _.forEach(assets, function(asset) { %>
+<%= asset %><% }); %>

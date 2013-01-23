@@ -12,7 +12,8 @@
     "grunt-contrib-watch": "~0.1.4",
     "grunt-contrib-clean": "~0.4.0a",
     "grunt-contrib-compass": "~0.1.0",
-    "grunt-contrib-copy": "~0.3.2"
+    "grunt-contrib-copy": "~0.3.2",
+    "grunt-contrib-requirejs": "~0.3.4"
   },
   "readmeFilename": "readme.md",
   "gitHead": "9f8e1af1aaf9aa882736dd57a8b09a505b68ce4e",
