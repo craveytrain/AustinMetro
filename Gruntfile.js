@@ -68,6 +68,20 @@ grunt.initConfig({
             options: {
                 interrupt: true
             }
+        },
+        styles: {
+            files: ['assets/sass/**/*'],
+            tasks: ['compass:dev'],
+            options: {
+                interrupt: true
+            }
+        },
+        scripts: {
+            files: ['assets/js/**/*'],
+            tasks: ['jshint', 'copy:dev'],
+            options: {
+                interrupt: true
+            }
         }
     },
     manifest: {

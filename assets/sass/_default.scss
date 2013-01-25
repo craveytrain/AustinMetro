@@ -1,0 +1,71 @@
+h1 {
+	font-size: $h1-font-size;
+	line-height: $h1-line-height;
+	margin: $h1-margins;
+}
+
+h2 {
+	font-size: $h2-font-size;
+	line-height: $h2-line-height;
+	margin: $h2-margins;
+	font-weight: normal;
+}
+
+h3 {
+	font-size: $h3-font-size;
+	line-height: $h3-line-height;
+	margin: $h3-margins;
+}
+
+.main {
+	text-align: center;
+}
+
+.route {
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.route-map {
+	margin: auto;
+	height: 300px;
+	width: 300px;
+	border: 1px solid #fff;
+}
+
+.direction {
+	width: 50%;
+	float: left;
+
+	h3 {
+		width: 50%;
+		float: left;
+		margin: 0;
+		padding-right: .5em;
+		text-align: right;
+	}
+}
+
+.times {
+	width: 50%;
+	float: left;
+	text-align: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	li{
+		display: list-item;
+		color: $text-color-secondary;
+
+		&:first-child {
+			display: list-item;
+			color: $text-color;
+		}
+
+		&:nth-of-type(n + 5) {
+			display: none;
+		}
+	}
+}

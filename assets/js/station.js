@@ -5,26 +5,16 @@ define(function() {
 		return (/\/stations\/\w+/).test(path);
 	};
 
-	var relativeTime = (function() {
-		var currentTime = new Date().getTime();
-		var pickupTime = new Date();
-		var isNext = true;
+	var hasPassed = (function() {
+		var now = new Date().getTime();
+		var then = new Date();
 
 		return function(time) {
 			var parsedTime = time.split(':');
-			pickupTime.setHours(parsedTime[0]);
-			pickupTime.setMinutes(parsedTime[1]);
+			then.setHours(parsedTime[0]);
+			then.setMinutes(parsedTime[1]);
 
-			if (pickupTime.getTime() < currentTime) {
-				isNext = true;
-				return 'past';
-			} else {
-				if (isNext) {
-					isNext = false;
-					return 'next';
-				}
-				return 'future';
-			}
+			return then.getTime() < now;
 		};
 	}());
 
@@ -32,7 +22,9 @@ define(function() {
 		var times = document.querySelectorAll('.times li');
 
 		Array.prototype.forEach.call(times, function(time) {
-			time.classList.add(relativeTime(time.textContent));
+			if (!hasPassed(time.textContent)) return;
+
+			time.parentNode.appendChild(time);
 		});
 	};
 

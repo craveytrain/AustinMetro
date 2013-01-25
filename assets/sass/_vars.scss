@@ -1,4 +1,4 @@
-$sans: Calibri, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$sans: HelveticaNeue, Helvetica, Arial, sans-serif;
 $serif: Cambria, Georgia, serif;
 $mono: Consolas, "Lucida Console", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
 
@@ -9,22 +9,22 @@ $h1-font-size: 2em; /* 36px */
 $h1-line-height: $line-height; /* 48px */
 $h1-margins: .667em 0; /* 24px 0 */
 
-$h2-font-size: 1.5em; /* 24px */
-$h2-line-height: 1; /* 24px */
-$h2-margins: 1em 0; /* 24px 0 */
+$h2-font-size: $font-size; /* 24px */
+$h2-line-height: $line-height; /* 24px */
+$h2-margins: .5em 0; /* 24px 0 */
 
-$h3-font-size: 1.1875em; /* 19px */
-$h3-line-height: 1.263; /* 24px */
-$h3-margins: .632em 0; /* 12px 0 */
+$h3-font-size: $font-size; /* 16px */
+$h3-line-height: $line-height; /* 24px */
+$h3-margins: .5em 0; /* 12px 0 */
 
 $h4-font-size: $font-size; /* 16px */
 $h4-line-height: $line-height; /* 24px */
 $h4-margins: 0;
 
 
-$text-color: #222;
-$text-color-light: #aaa;
-$bg-color: #fff;
+$text-color: rgb(255,255,255);
+$text-color-secondary: rgb(146,146,146);
+$bg-color: rgb(164,5,22);
 
 $link-color: #00e;
 $link-visited-color: #551a8b;
