@@ -1,14 +1,16 @@
 extends layout
 
 block content
-	h1= name
+	h1.station-name= name
 	each route in routes
 		div.route
-			div.route-map
-			h2= route.name
-			each dir in route.directions
-				div.direction
-					h3= dir.name
-					ol.times
-						each time in dir.times
-							li= time
+			div.route-picture
+				div.route-map
+				h2= route.name
+			div.route-times
+				each dir in route.directions
+					div.direction
+						h3= dir.name
+						ol.times
+							each time in dir.times
+								li= time
