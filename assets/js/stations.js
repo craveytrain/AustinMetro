@@ -10,7 +10,7 @@ define([
 	'use strict';
 
 	var isStationList = function(path) {
-		return (/^\/stations\/?$/).test(path);
+		return (/^\/(stations\/)?$/).test(path);
 	};
 
 	var protos = function() {
@@ -75,7 +75,7 @@ define([
 		promise
 			.join([
 				function() {
-					return cache('stations.json');
+					return cache('/stations/stations.json');
 				},
 				function() {
 					return geo.detect();
