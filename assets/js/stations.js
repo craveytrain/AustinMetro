@@ -51,13 +51,13 @@ define([
 			var distance = getDistance(station.pos, coords);
 			if (!nearest) {
 				nearest = {
-					station: station.slug,
+					station: station.id,
 					distance: distance
 				};
 			} else {
 				if (distance < nearest.distance) {
 					nearest = {
-						station: station.slug,
+						station: station.id,
 						distance: distance
 					};
 				}
@@ -75,7 +75,7 @@ define([
 		promise
 			.join([
 				function() {
-					return cache(path);
+					return cache('stations.json');
 				},
 				function() {
 					return geo.detect();

@@ -15,7 +15,8 @@ grunt.initConfig({
     copy: {
         dev: {
             files: {
-                'build/js/': ['assets/js/**/*.js']
+                'build/js/': ['assets/js/**/*.js'],
+                'build/stations/': ['stations.json']
             }
         }
     },
