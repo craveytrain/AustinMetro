@@ -3,6 +3,6 @@ extends layout
 block content
 	h1= title
 	ul
-		each station, id in stations
+		each station in stations
 			li
-				a(href='/stations/#{id}')= station.name
+				a(href='/stations/#{station.id}')= station.name
