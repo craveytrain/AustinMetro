@@ -60,16 +60,12 @@ h3 {
 	padding: 0;
 
 	li{
-		display: list-item;
+		display: none;
 		color: $text-color-secondary;
 
 		&:first-child {
 			display: list-item;
 			color: $text-color;
-		}
-
-		&:nth-of-type(n + 5) {
-			display: none;
 		}
 	}
 }
