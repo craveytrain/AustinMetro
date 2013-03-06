@@ -6,6 +6,7 @@ block content
 		div.route
 			div.route-picture
 				div.route-map
+					object(data='/svg/#{route.id}.svg', type="image/svg+xml")
 				h2= route.name
 			div.route-times
 				each dir in route.directions
