@@ -4,10 +4,8 @@ block content
 	h1.station-name= name
 	each route in routes
 		div.route
-			div.route-picture
-				div.map-container
-					object(data='/svg/#{route.id}.svg', type="image/svg+xml", class="route-map")
-				h2= route.name
+			object(data='/svg/#{route.id}.svg', type="image/svg+xml", class="route-map")
+			h2= route.name
 			div.route-times
 				each dir in route.directions
 					div.direction
