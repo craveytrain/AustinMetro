@@ -15,7 +15,8 @@ grunt.initConfig({
     copy: {
         dev: {
             files: [
-                { cwd: 'assets', src: ['**', '!sass/**'], dest: 'build/', filter: 'isFile', expand: true }
+                { cwd: 'assets', src: ['**', '!sass/**'], dest: 'build/', filter: 'isFile', expand: true },
+                { src: ['stations.json'], dest: 'build/stations/' }
             ]
         }
     },
