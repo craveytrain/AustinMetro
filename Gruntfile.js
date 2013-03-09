@@ -15,7 +15,7 @@ grunt.initConfig({
     copy: {
         dev: {
             files: [
-                { cwd: 'assets', src: ['**', '!sass/**'], dest: 'build/', filter: 'isFile', expand: true },
+                { cwd: 'assets', src: ['**'], dest: 'build/', filter: 'isFile', expand: true },
                 { src: ['stations.json'], dest: 'build/stations/' }
             ]
         }
@@ -41,7 +41,7 @@ grunt.initConfig({
             }
         },
         options: {
-            sassDir: 'assets/sass',
+            sassDir: 'sass',
             cssDir: 'build/css'
         }
     },
@@ -71,7 +71,7 @@ grunt.initConfig({
             }
         },
         styles: {
-            files: ['assets/sass/**/*'],
+            files: ['sass/**/*'],
             tasks: ['compass:dev'],
             options: {
                 interrupt: true
