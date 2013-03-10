@@ -64,7 +64,7 @@ grunt.initConfig({
     },
     watch: {
         views: {
-            files: ['views/**/*', 'stations.json'],
+            files: ['views/**/*', 'stations.json', 'maps/**/*'],
             tasks: ['render'],
             options: {
                 interrupt: true
@@ -83,18 +83,6 @@ grunt.initConfig({
             options: {
                 interrupt: true
             }
-        },
-        svg: {
-            files: ['assets/svg/**/*'],
-            tasks: 'copy:dev',
-            options: {
-                interrupt: true
-            }
-        }
-    },
-    svgo: {
-        optimize: {
-            files: 'build/**/*.svg'
         }
     },
     manifest: {
@@ -111,14 +99,13 @@ grunt.loadNpmTasks('grunt-contrib-clean');
 grunt.loadNpmTasks('grunt-contrib-copy');
 grunt.loadNpmTasks('grunt-contrib-compass');
 grunt.loadNpmTasks('grunt-contrib-requirejs');
-grunt.loadNpmTasks('svgo-grunt');
-grunt.loadTasks('lib');
+grunt.loadTasks('tasks');
 
 grunt.registerTask('build', ['jshint', 'clean', 'render']);
 
 grunt.registerTask('preview', ['build', 'copy:dev', 'compass:dev', 'connect', 'watch']);
 
-grunt.registerTask('package', ['build', 'compass:prod', 'svgo', 'requirejs', 'manifest']);
+grunt.registerTask('package', ['build', 'compass:prod', 'requirejs', 'manifest']);
 
 // Default task(s).
 grunt.registerTask('default', ['preview']);

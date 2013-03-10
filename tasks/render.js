@@ -32,6 +32,10 @@ var buildStations = function() {
 		station.title = station.name;
 		station.version = version;
 
+		station.routes.forEach(function(route) {
+			route.map = grunt.file.read(buildPath(['maps', route.id + '.svg']));
+		});
+
 		obj[stationId] = {
 			options: {
 				data: station
