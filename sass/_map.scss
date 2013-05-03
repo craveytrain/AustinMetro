@@ -1,32 +1,13 @@
 $stroke-width: 10;
 
 .map {
-	width: 250.357px;
-	height: 595.663px;
-	fill: $text-color;
-	stroke-width: $stroke-width;
-	stroke: $text-color;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-
-	text {
-		stroke-width: 0;
-	}
-}
-
-.map-route {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	fill: none;
-}
-
-.map-station {
-	fill: $bg-color;
-}
-
-.map-station-name {
-	font-weight: bold;
-}
-
-.map-dir {
-	stroke-linejoin: miter;
-	stroke-width: 0;
+	stroke-width: $stroke-width;
+	stroke: rgba(255,255,255,.3);
+	stroke-linejoin: round;
 }

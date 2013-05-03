@@ -1,3 +1,7 @@
+html, body {
+	height: 100%;
+}
+
 h1 {
 	font-size: $h1-font-size;
 	line-height: $h1-line-height;
@@ -18,17 +22,16 @@ h3 {
 }
 
 .main {
+	height: 100%;
+	width: 100%;
 	text-align: center;
 }
 
-.station-name {
-	margin-bottom: 1.333em;
-}
-
-.route {
-	width: 80%;
-	margin: 0 auto;
-	text-align: center;
+.route-times {
+	position: absolute;
+	bottom: 20%;
+	left: 0;
+	right: 0;
 }
 
 .direction {
@@ -36,7 +39,7 @@ h3 {
 	float: left;
 
 	h3 {
-		width: 50%;
+		width: 35%;
 		float: left;
 		margin: 0;
 		padding-right: .5em;
@@ -45,20 +48,31 @@ h3 {
 }
 
 .times {
-	width: 50%;
+	position: relative;
+	width: 65%;
 	float: left;
 	text-align: left;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 
-	li{
-		display: none;
-		color: $text-color-secondary;
+	li {
+		color: rgba(255,255,255,.5);
+	}
 
-		&:first-child {
-			display: list-item;
-			color: $text-color;
+	.current {
+		color: #fff;
+		background: rgba(255,255,255,.4);
+
+		span {
+			margin-left: .5em;
+			font-size: .75em;
+			line-height: 2;
+			color: rgba(255,255,255, .8);
 		}
+	}
+
+	.current ~ li {
+		color: rgba(255,255,255, .8);
 	}
 }
