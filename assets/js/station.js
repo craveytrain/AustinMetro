@@ -33,19 +33,31 @@ define(['pluralize'], function() {
 	var build = function() {
 		Array.prototype.forEach.call(document.querySelectorAll('.times'), function(timeTable) {
 			var future = false;
+			var times = timeTable.querySelectorAll('li');
 
-			Array.prototype.forEach.call(timeTable.querySelectorAll('li'), function(time) {
-				var elapsedTime = timePassed(time.textContent);
-				var relTime = document.createElement('span');
+			Array.prototype.forEach.call(times, function(time) {
+				time.elapsedTime = timePassed(time.textContent);
 
-				if (elapsedTime > 0 && !future) {
+				if (time.elapsedTime > 0 && !future) {
 					future = true;
-					time.classList.add('current');
-					relTime.textContent = relateTime(elapsedTime);
-					time.appendChild(relTime);
+					markCurrent(time);
 				}
 			});
+
+			// After all the routes have run
+			if (!future) {
+				times[0].elapsedTime += 1000 * 60 * 60 * 24; // add a day
+				markCurrent(times[0]);
+			}
 		});
+	};
+
+	var markCurrent = function(time) {
+		var relTime = document.createElement('span');
+
+		time.classList.add('current');
+		relTime.textContent = relateTime(time.elapsedTime);
+		time.appendChild(relTime);
 	};
 
 	var init = function() {
