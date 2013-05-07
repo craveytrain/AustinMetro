@@ -10,7 +10,8 @@ grunt.initConfig({
             jshintrc: '.jshintrc'
         },
         build: ['Gruntfile.js', 'lib/**/*.js'],
-        run: ['assets/**/*.js', '!**/lib/**']
+        server: ['app.js', 'routes/**/*.js'],
+        client: ['assets/**/*.js', '!**/lib/**']
     },
     copy: {
         dev: {
@@ -18,14 +19,6 @@ grunt.initConfig({
                 { cwd: 'assets', src: ['**'], dest: 'build/', filter: 'isFile', expand: true },
                 { src: ['stations.json'], dest: 'build/stations/' }
             ]
-        }
-    },
-    render: {
-        target: 'build'
-    },
-    jade: {
-        options: {
-           pretty: true
         }
     },
     compass: {
@@ -54,22 +47,7 @@ grunt.initConfig({
             }
         }
     },
-    connect: {
-        server: {
-            options: {
-                port: 3000,
-                base: 'build'
-            }
-        }
-    },
     watch: {
-        views: {
-            files: ['views/**/*', 'stations.json', 'maps/**/*'],
-            tasks: ['render'],
-            options: {
-                interrupt: true
-            }
-        },
         styles: {
             files: ['sass/**/*'],
             tasks: ['compass:dev'],
@@ -92,8 +70,6 @@ grunt.initConfig({
 });
 
 grunt.loadNpmTasks('grunt-contrib-jshint');
-grunt.loadNpmTasks('grunt-contrib-jade');
-grunt.loadNpmTasks('grunt-contrib-connect');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-clean');
 grunt.loadNpmTasks('grunt-contrib-copy');
@@ -101,9 +77,9 @@ grunt.loadNpmTasks('grunt-contrib-compass');
 grunt.loadNpmTasks('grunt-contrib-requirejs');
 grunt.loadTasks('tasks');
 
-grunt.registerTask('build', ['jshint', 'clean', 'render']);
+grunt.registerTask('build', ['jshint', 'clean']);
 
-grunt.registerTask('preview', ['build', 'copy:dev', 'compass:dev', 'connect', 'watch']);
+grunt.registerTask('preview', ['build', 'copy:dev', 'compass:dev', 'watch']);
 
 grunt.registerTask('package', ['build', 'compass:prod', 'requirejs', 'manifest']);
 

@@ -1,8 +1,8 @@
 extends layout
 
 block content
-	h1.station-name= name
-	each route in routes
+	h1.station-name= station.name
+	each route in station.routes
 		div.route
 			!= route.map
 			h2= route.name
