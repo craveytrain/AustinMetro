@@ -1,8 +1,6 @@
 'use strict';
 
-var jsdom = require("jsdom");
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('app.db');
+var jsdom = require('jsdom');
 
 var routes = {
 	redline: {
@@ -45,11 +43,6 @@ var routes = {
 };
 
 var crawl = function(tableName, stations, url) {
-	db.run('drop table if exists ' + tableName);
-	db.run('create table ' + tableName + ' (' + stations.join(',') + ')');
-
-	var stmt = db.prepare('INSERT INTO ' + tableName + ' VALUES (?,?,?,?,?,?,?,?,?)');
-
 	jsdom.env(
 	  url,
 	  ['http://code.jquery.com/jquery.js'],
@@ -65,13 +58,13 @@ var crawl = function(tableName, stations, url) {
 	  			if (j < 9 && cell.textContent) times.push(cell.textContent);
 	  		});
 
-	  		if (times.length) stmt.run(times);
+	  		if (times.length) console.log(times);
 		  	times = [];
 	  	});
 	}); // jsdom env
-}
+};
 
-db.serialize(function() {
+(function() {
 	for (var route in routes) { if (routes.hasOwnProperty(route)) {
 		var stations;
 		var directions = routes[route].directions;
@@ -84,4 +77,4 @@ db.serialize(function() {
 			}}
 		}}
 	}}
-}); // db serialize
+}());

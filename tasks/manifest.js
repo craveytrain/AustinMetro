@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
 var generate = function() {
 	var version = grunt.config('pkg').version;
-	var template = grunt.file.read('lib/manifest.tmpl');
+	var template = grunt.file.read('tasks/manifest.tmpl');
 	var stations = grunt.file.readJSON('./stations.json');
 
 	var model = {

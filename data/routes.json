@@ -1,0 +1,27 @@
+{
+	"redline": {
+		"stations": [
+			"downtown",
+			"plazasaltillo",
+			"mlkjr",
+			"highland",
+			"crestview",
+			"kramer",
+			"howard",
+			"lakeline",
+			"leander"
+		],
+		"directions": {
+			"north": {
+				"monthu": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=1&d=1",
+				"fri": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=2&d=1",
+				"sat": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=3&d=1"
+			},
+			"south": {
+				"monthu": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=1&d=0",
+				"fri": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=2&d=0",
+				"sat": "http://www.capmetro.org/schedulemap-rail.aspx?f1=550&s=3&d=0"
+			}
+		}
+	}
+}
