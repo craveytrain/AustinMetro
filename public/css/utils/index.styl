@@ -1,7 +1,8 @@
-@mixin selection($bg: #b3d4fc, $color: inherit, $text-shadow: none){
-  * {
+selection($bg = #b3d4fc, $color = inherit, $text-shadow = none)
     &::-moz-selection { background: $bg; color: $color; text-shadow: $text-shadow; }
     &::-webkit-selection { background: $bg; color: $color; text-shadow: $text-shadow; }
     &::selection { background: $bg; color: $color; text-shadow: $text-shadow; }
-  }
-}
+
+box-sizing($sizing)
+	-moz-box-sizing: $sizing;
+	box-sizing: $sizing;

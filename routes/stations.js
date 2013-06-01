@@ -6,7 +6,7 @@
 'use strict';
 
 var fs = require('fs');
-var file = './stations.json';
+var file = 'schedule.json';
 
 var stations, version;
 

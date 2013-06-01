@@ -11,7 +11,7 @@
  */
 
 * {
-   @include box-sizing(border-box);
+   box-sizing(border-box);
 }
 
 /* =============================================================================
@@ -44,8 +44,9 @@ body { margin: 0; font-size: $font-size; line-height: $line-height; }
  * These selection declarations have to be separate
  * Also: hot pink! (or customize the background color to match your design)
  */
-
-@include selection($selection-bg, $selection-color);
+* {
+   selection($selection-bg, $selection-color);
+}
 
 /* =============================================================================
    Links
@@ -95,14 +96,14 @@ sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 
 p {
-   margin: #{$line-height}em 0;
+   margin: {$line-height}em 0;
 }
 
 /* =============================================================================
    Lists
    ========================================================================== */
 
-ul, ol { margin: #{$line-height}em 0; padding: 0 0 0 40px; }
+ul, ol { margin: {$line-height}em 0; padding: 0 0 0 40px; }
 dd { margin: 0 0 0 40px; }
 nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
 
