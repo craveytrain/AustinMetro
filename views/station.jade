@@ -4,7 +4,6 @@ block content
 	h1.station-name= station.name
 	each route in station.routes
 		div.route
-			include maps/redline.svg
 			h2= route.name
 			div.route-times
 				each dir in route.directions
