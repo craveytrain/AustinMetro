@@ -40,14 +40,14 @@ define(['pluralize'], function() {
 
 				if (time.elapsedTime > 0 && !future) {
 					future = true;
-					markCurrent(time);
+					// markCurrent(time);
 				}
 			});
 
 			// After all the routes have run
 			if (!future) {
 				times[0].elapsedTime += 1000 * 60 * 60 * 24; // add a day
-				markCurrent(times[0]);
+				// markCurrent(times[0]);
 			}
 		});
 	};

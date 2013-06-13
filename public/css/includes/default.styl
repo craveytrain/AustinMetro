@@ -21,58 +21,42 @@ h3 {
 	margin: $h3-margins;
 }
 
+.no-trans {
+	transition(none);
+}
+
+.layer {
+	position: absolute;
+	top: $h1-line-height * $h1-font-size;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	transition(all .3s ease-out);
+}
+
 .main {
 	height: 100%;
 	width: 100%;
 	text-align: center;
 }
 
-.route-times {
-	position: absolute;
-	bottom: 20%;
-	left: 0;
-	right: 0;
+#next-time {
+	background: $bg-color;
+}
+
+#route-times {
+	background: $under-card-bg-color;
+	color: $under-card-text-color;
+	z-index: -1;
 }
 
 .direction {
 	width: 50%;
 	float: left;
-
-	h3 {
-		width: 35%;
-		float: left;
-		margin: 0;
-		padding-right: .5em;
-		text-align: right;
-	}
 }
 
 .times {
-	position: relative;
-	width: 65%;
-	float: left;
-	text-align: left;
 	list-style: none;
 	margin: 0;
 	padding: 0;
-
-	li {
-		color: rgba(255,255,255,.5);
-	}
-
-	.current {
-		color: #fff;
-		background: rgba(255,255,255,.4);
-
-		span {
-			margin-left: .5em;
-			font-size: .75em;
-			line-height: 2;
-			color: rgba(255,255,255, .8);
-		}
-	}
-
-	.current ~ li {
-		color: rgba(255,255,255, .8);
-	}
 }
