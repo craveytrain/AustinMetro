@@ -1,17 +1,15 @@
 {
   "name": "AustinMetro",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Mike Cravey",
   "license": "BSD",
   "private": "true",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.2.0",
-    "jsdom": "~0.6.0",
-    "stylus": "~0.32.1"
+    "jsdom": "~0.6.0"
   },
   "readmeFilename": "readme.md",
-  "gitHead": "9f8e1af1aaf9aa882736dd57a8b09a505b68ce4e",
   "description": "This is a project to help users find out the next route available for Austin Metro public transit. First we are concentrating on the rail with intentions of expanding to the bus lines when the code has reached a feature critical mass and has been stablized.",
   "main": "app.js",
   "scripts": {
@@ -21,8 +19,13 @@
     "type": "git",
     "url": "git://github.com/craveytrain/AustinMetro.git"
   },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+    },
   "dependencies": {
     "express": "~3.2.5",
-    "jade": "~0.31.1"
+    "jade": "~0.31.1",
+    "stylus": "~0.32.1"
   }
 }
