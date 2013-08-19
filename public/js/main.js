@@ -1,15 +1,12 @@
 require([
 	'stations',
-	'station',
-	'touch'
+	'station'
 ], function(
 	stations,
-	station,
-	touch
+	station
 ) {
 	'use strict';
 
 	stations.init();
 	station.init();
-	if (touch.hasTouch) touch.init()
 });

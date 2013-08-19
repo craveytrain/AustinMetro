@@ -1,0 +1,39 @@
+.route {
+	position: absolute;
+	top: $h1-font-size * $h1-line-height;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.card {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.next-time {
+	@extend .card;
+	background: $bg-color;
+}
+
+.route-times {
+	@extend .card;
+	top: 100%;
+	bottom: initial;
+	background: $under-card-bg-color;
+	color: $under-card-text-color;
+}
+
+.direction {
+	width: 50%;
+	float: left;
+}
+
+.times {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
